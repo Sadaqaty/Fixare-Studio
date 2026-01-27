@@ -1,7 +1,6 @@
-<!DOCTYPE html><!-- Last Published: Mon Oct 14 2024 13:03:26 GMT+0000 (Coordinated Universal Time) -->
-<html data-wf-domain="awards.startech.vc" data-wf-page="667d285efd84408ff3c1ba09"
-  data-wf-site="65ef0d86eff3b9ba6b18aef9" lang="ru">
-<!-- Mirrored from awards.startech.vc/en by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 Nov 2024 14:52:53 GMT -->
+<!DOCTYPE html>
+<html data-wf-domain="fixare.studio" data-wf-page="667d285efd84408ff3c1ba09" data-wf-site="65ef0d86eff3b9ba6b18aef9"
+  lang="en_US">
 
 <head>
   <meta charset="utf-8" />
@@ -41,8 +40,7 @@
   <meta name="twitter:url" content="https://fixare.studio/" />
   <meta name="twitter:image" content="https://fixare.studio/assets/Fixare-Square.png" />
   <meta name="twitter:image:alt" content="Fixare Studio logomark on a dark gradient background" />
-  <link href="styles.css"
-    rel="stylesheet" type="text/css" />
+  <link href="styles.css" rel="stylesheet" type="text/css" />
   <style>
     @media (min-width:992px) {
       html.w-mod-js:not(.w-mod-ix) [data-w-id="a1bb256b-489c-4632-bad1-a4c405aec261"] {
@@ -189,70 +187,239 @@
       }
     }
 
-    @media (max-width:479px) {
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="90c6d87e-3784-104e-c6a1-d46bc8fe0673"] {
-        display: none;
+    /* Premium Certificate Card Styles */
+    .certificates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 120px auto 0;
+      perspective: 1000px;
+      position: relative;
+      z-index: 10;
+    }
+
+    @media (max-width: 768px) {
+      .certificates-grid {
+        grid-template-columns: 1fr;
+        margin: 60px auto 0;
+        padding: 2rem 1.5rem;
+        gap: 2rem;
+      }
+    }
+
+    .certificate-card {
+      background: radial-gradient(circle at center, rgb(32, 83, 104), rgb(42, 84, 102));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 480px) {
+      .certificate-card {
+        min-height: auto;
+      }
+    }
+
+    .certificate-card:hover {
+      transform: translateY(-15px) rotateX(2deg);
+      border-color: rgba(0, 210, 255, 0.4);
+      box-shadow: 0 30px 60px rgba(0, 150, 255, 0.25);
+    }
+
+    .card-background {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+      opacity: 0.6;
+      z-index: 1;
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+      padding: 4rem 3rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .card-content {
+        padding: 3rem 2rem;
+      }
+    }
+
+    .card-title {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 900;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      line-height: 1.1;
+      background: linear-gradient(to bottom, #ffffff, #a0a0a0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+      width: 100%;
+      word-wrap: break-word;
+    }
+
+    .card-title .certificate-name {
+      font-size: inherit !important;
+      text-transform: inherit !important;
+      font-family: inherit !important;
+      font-weight: inherit !important;
+      min-height: auto !important;
+    }
+
+    @media (max-width: 768px) {
+      .card-title {
+        letter-spacing: 2px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card-title {
+        font-size: 2rem;
+        letter-spacing: 1px;
+      }
+    }
+
+    .card-tagline {
+      font-size: 1.3rem;
+      color: #00d2ff;
+      margin-bottom: 2.5rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+      .card-tagline {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    .card-info {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 3rem;
+      max-width: 90%;
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .card-info {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+      }
+    }
+
+    .card-button-wrapper {
+      margin-top: auto;
+    }
+
+    @media (max-width: 480px) {
+      .certificate-card {
+        min-height: auto !important;
+        height: auto !important;
+        display: block !important;
       }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="b5ef3779-5f7d-dc7b-2cb3-8d478bfab4e5"] {
-        display: none;
+      .card-content {
+        display: block !important;
+        padding: 3rem 1.5rem !important;
+        height: auto !important;
+        text-align: center !important;
       }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="611899a1-4350-d844-49ad-31dba55e0116"] {
-        display: flex;
+      .card-title,
+      .card-tagline,
+      .card-info,
+      .card-button-wrapper {
+        display: block !important;
+        position: static !important;
+        margin: 0 0 1.5rem 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        transform: none !important;
+        opacity: 1 !important;
       }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="a1bb256b-489c-4632-bad1-a4c405aec261"] {
-        -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        -moz-transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        -ms-transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        display: flex;
-        opacity: 1;
+      .card-button-wrapper {
+        margin-bottom: 0 !important;
+        margin-top: 2rem !important;
       }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="b53c975b-19ee-04a7-8989-92d108c76c79"] {
-        opacity: 1;
+      .card-title {
+        font-size: 2.2rem !important;
+        line-height: 1.1 !important;
       }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="ce672c7c-5015-9bf0-1410-e1560772d8ac"] {
-        -webkit-transform: translate3d(0, 30vh, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        -moz-transform: translate3d(0, 30vh, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        -ms-transform: translate3d(0, 30vh, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        transform: translate3d(0, 30vh, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        display: none;
+      .card-tagline {
+        font-size: 1.1rem !important;
+        color: #00d2ff !important;
       }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="8d816402-9e60-2ec8-9ed8-2cb24ae6a1ca"] {
-        display: none;
-        opacity: 0;
+      .card-info {
+        font-size: 1.1rem !important;
+        line-height: 1.6 !important;
       }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="8a9dde4c-4c0e-0925-3ae5-be436fbd022b"] {
-        width: 0em;
-        height: 1.75em;
+      .certificate-item {
+        min-height: auto !important;
+        padding: 0 !important;
+        height: auto !important;
+        display: block !important;
       }
+    }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="7f049a87-a332-eae0-606f-52e6006dbab0"] {
-        opacity: 1;
-      }
+    .card-button {
+      display: inline-block;
+      padding: 1.2rem 3.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      transition: all 0.4s ease;
+      text-transform: uppercase;
+      backdrop-filter: blur(5px);
+      white-space: nowrap;
+    }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="772d29ac-05bb-9c73-c825-cd832f4d288c"] {
-        opacity: 0;
+    @media (max-width: 480px) {
+      .card-button {
+        padding: 0.8rem 2rem;
+        font-size: 0.85rem;
+        letter-spacing: 2px;
       }
+    }
 
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="8d53ccf5-4f7c-1bd9-ea89-3887bf5a22cc"] {
-        opacity: 0;
-        display: none;
-      }
-
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="772d29ac-05bb-9c73-c825-cd832f4d288b"] {
-        width: 0vw;
-      }
-
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="772d29ac-05bb-9c73-c825-cd832f4d2889"] {
-        width: 0vw;
-      }
+    .card-button:hover {
+      background: #ffffff;
+      color: #000000;
+      transform: scale(1.08);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
     }
   </style>
   <link href="https://fonts.googleapis.com/" rel="preconnect" />
@@ -262,10 +429,8 @@
     type="text/javascript">WebFont.load({ google: { families: ["Inter Tight:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic:cyrillic,cyrillic-ext,latin"] } });</script>
   <script
     type="text/javascript">!function (o, c) { var n = c.documentElement, t = " w-mod-"; n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n.className += t + "touch") }(window, document);</script>
-  <link href="assets/fixare.ico"
-    rel="shortcut icon" type="image/x-icon" />
-  <link href="assets/Fixare.svg"
-    rel="apple-touch-icon" />
+  <link href="assets/fixare.ico" rel="shortcut icon" type="image/x-icon" />
+  <link href="assets/Fixare.svg" rel="apple-touch-icon" />
   <style>
     html.lenis,
     html.lenis body {
@@ -410,7 +575,8 @@
             <div class="w-checkbox-input w-checkbox-input--inputType-custom checkox-item"></div><input type="checkbox"
               name="checkbox" id="checkbox" data-name="Checkbox" required=""
               style="opacity:0;position:absolute;z-index:-1" /><span class="text-15-regular dark no-limit w-form-label"
-              for="checkbox">I Agree to the <a href="privacy.html" target="_blank" class="link-blue">processing of my personal data</a></span>
+              for="checkbox">I Agree to the <a href="privacy.html" target="_blank" class="link-blue">processing of my
+                personal data</a></span>
           </label>
         </div><input type="submit" data-wait="" id="submit" class="submit-button w-button" value="Купить" />
       </form>
@@ -475,7 +641,7 @@
       <div class="nav-items"><a href="#about" class="nav-link">about</a><a href="#nomination"
           class="nav-link">Projects</a><a href="#place" class="nav-link">Award</a><a href="#timeline"
           class="nav-link">timeline</a><a href="#" class="nav-link hidden">Эксперты</a><a href="#contact"
-          class="nav-link">contacts</a><a href="/careers/"class="nav-link">career</a></div>
+          class="nav-link">contacts</a><a href="/careers/" class="nav-link">career</a></div>
     </nav><img
       src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/66603af083943342fe214cf9_border-right-top-new.svg"
       loading="lazy" alt="" class="border-right-top" /><img
@@ -638,7 +804,8 @@
                   src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6601c30a3d17ffd74a59021c_angle-bottom-right.svg"
                   loading="lazy" alt="" class="angle-right-bottom" /><img
                   src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6601c2c3ab865d79281c0a32_angle-2.svg"
-                  loading="lazy" alt="" class="angle-left-bottom" /></div>
+                  loading="lazy" alt="" class="angle-left-bottom" />
+              </div>
             </form>
             <div class="success-message w-form-done"></div>
             <div class="w-form-fail">
@@ -691,10 +858,13 @@
           <div class="mission-container en">
             <div data-a-delay="0.2" data-a-split="line" data-obs-once="true" class="subtitle">[our mission]</div>
             <div data-a-delay="0.2" data-a-split="line" data-obs-once="true" class="mission-text">We are FixAre</div>
-            <div data-a-delay="0.4" data-a-split="line" data-obs-once="true" class="text-16-light center width-80">We’re Fixare Studio, a team that believes creative design and 
-              smart technology can genuinely transform how businesses operate. We build systems, brands, and digital 
-              experiences that make work simpler and growth easier. Our approach is straightforward: understand your goals, 
-              solve real problems, and deliver solutions that actually work in the real world. Every project we take on is built 
+            <div data-a-delay="0.4" data-a-split="line" data-obs-once="true" class="text-16-light center width-80">We’re
+              Fixare Studio, a team that believes creative design and
+              smart technology can genuinely transform how businesses operate. We build systems, brands, and digital
+              experiences that make work simpler and growth easier. Our approach is straightforward: understand your
+              goals,
+              solve real problems, and deliver solutions that actually work in the real world. Every project we take on
+              is built
               with intention, clarity, and a drive to help our clients scale with confidence. <br /></div>
           </div>
         </div>
@@ -709,30 +879,24 @@
     <section data-w-id="11fff7cb-96ad-11e4-4abb-e9ef1e59d723" class="section nominations">
       <div class="w-layout-blockcontainer container w-container">
         <div class="nominations-wrapper">
-          <div class="nominations-list"><a id="nomination"
-              href="https://instaconnect.fixare.studio/" target="_blank"
+          <div class="nominations-list"><a id="nomination" href="https://instaconnect.fixare.studio/" target="_blank"
               class="nomination-item w-inline-block">
               <div class="nomination big automatization">InstaConenct Pro</div>
-            </a><a href="https://chunker.fixare.studio/" target="_blank"
-              class="nomination-item w-inline-block">
+            </a><a href="https://chunker.fixare.studio/" target="_blank" class="nomination-item w-inline-block">
               <div class="nomination">Chunker</div>
             </a><a href="https://www.instagram.com/ofertapunenet/" target="_blank"
               class="nomination-item w-inline-block">
               <div class="nomination">OFERTA PUN</div>
-            </a><a href="https://www.lexa.lawyer/" target="_blank"
-              class="nomination-item w-inline-block">
+            </a><a href="https://www.lexa.lawyer/" target="_blank" class="nomination-item w-inline-block">
               <div class="nomination">LEXA</div>
-            </a><a href="https://zuhd.store/"
-              target="_blank" class="nomination-item w-inline-block">
+            </a><a href="https://zuhd.store/" target="_blank" class="nomination-item w-inline-block">
               <div class="nomination">Zuhd Store</div>
-            </a><a href="https://klientas.com/" target="_blank"
-              class="nomination-item w-inline-block">
+            </a><a href="https://klientas.com/" target="_blank" class="nomination-item w-inline-block">
               <div class="nomination">Klientas</div>
-            </a><a href="https://www.instagram.com/digitalsoftwaremarket/"
-              target="_blank" class="nomination-item w-inline-block">
-              <div class="nomination big">Digital Software Market</div>
-            </a><a href="https://www.kosovajob.com/" target="_blank"
+            </a><a href="https://www.instagram.com/digitalsoftwaremarket/" target="_blank"
               class="nomination-item w-inline-block">
+              <div class="nomination big">Digital Software Market</div>
+            </a><a href="https://www.kosovajob.com/" target="_blank" class="nomination-item w-inline-block">
               <div class="nomination">Kerko Pun</div>
             </a></div>
           <div class="sticky-container">
@@ -761,8 +925,8 @@
             </a><a href="https://sadaqaty.fixare.studio/projects/mailfusion" target="_blank"
               class="nomination-item w-inline-block">
               <div class="nomination">MailFusion</div>
-            </a><a href="https://sadaqaty.fixare.studio/projects/ls-tech"
-              target="_blank" class="nomination-item w-inline-block">
+            </a><a href="https://sadaqaty.fixare.studio/projects/ls-tech" target="_blank"
+              class="nomination-item w-inline-block">
               <div class="nomination big">LS-Tech</div>
             </a><a href="https://sadaqaty.fixare.studio/projects/douty-marketplace" target="_blank"
               class="nomination-item w-inline-block">
@@ -776,29 +940,24 @@
             </a></div>
           <div class="nominations-list-mobile">
             <div id="w-node-e9cc6414-ae78-dbc1-f681-191f94482bfa-f3c1ba09" class="nomination-list-mob"><a
-                href="https://instaconnect.fixare.studio/" target="_blank"
-                class="nomination-item w-inline-block">
+                href="https://instaconnect.fixare.studio/" target="_blank" class="nomination-item w-inline-block">
                 <div class="nomination big automatization">InstaConenct Pro</div>
-              </a><a href="https://chunker.fixare.studio/" target="_blank"
-                class="nomination-item w-inline-block">
+              </a><a href="https://chunker.fixare.studio/" target="_blank" class="nomination-item w-inline-block">
                 <div class="nomination">Chunker</div>
               </a><a href="https://www.instagram.com/ofertapunenet/" target="_blank"
                 class="nomination-item w-inline-block">
                 <div class="nomination">OFERTA PUN</div>
-              </a><a href="https://www.averygoodagency.com/" target="_blank"
-                class="nomination-item w-inline-block">
+              </a><a href="https://www.averygoodagency.com/" target="_blank" class="nomination-item w-inline-block">
                 <div class="nomination">A Very Good Agency</div>
               </a><a href="https://www.instagram.com/bakeryhilldental/" target="_blank"
                 class="nomination-item w-inline-block">
                 <div class="nomination">Bakery Hill Dental</div>
-              </a><a href="https://www.lexa.lawyer/" target="_blank"
-                class="nomination-item w-inline-block">
+              </a><a href="https://www.lexa.lawyer/" target="_blank" class="nomination-item w-inline-block">
                 <div class="nomination">LEXA</div>
-              </a><a href="https://sadaqaty.fixare.studio/projects/ls-tech"
-                target="_blank" class="nomination-item w-inline-block">
+              </a><a href="https://sadaqaty.fixare.studio/projects/ls-tech" target="_blank"
+                class="nomination-item w-inline-block">
                 <div class="nomination">LS-Tech</div>
-              </a><a href="https://zuhd.store/"
-                target="_blank" class="nomination-item w-inline-block">
+              </a><a href="https://zuhd.store/" target="_blank" class="nomination-item w-inline-block">
                 <div class="nomination">Zuhd</div>
               </a></div><a data-w-id="611899a1-4350-d844-49ad-31dba55e0116" href="#"
               class="show-more-wrap w-inline-block">
@@ -807,14 +966,12 @@
                 loading="lazy" alt="" class="arrow" />
             </a>
             <div data-w-id="90c6d87e-3784-104e-c6a1-d46bc8fe0673" class="nomination-list-mob more"><a
-                href="https://www.kosovajob.com/" target="_blank"
-                class="nomination-item w-inline-block">
+                href="https://www.kosovajob.com/" target="_blank" class="nomination-item w-inline-block">
                 <div class="nomination">Kerko Pun</div>
-              </a><a href="https://klientas.com/" target="_blank"
-                class="nomination-item w-inline-block">
+              </a><a href="https://klientas.com/" target="_blank" class="nomination-item w-inline-block">
                 <div class="nomination big">Klientas</div>
-              </a><a href="https://www.instagram.com/digitalsoftwaremarket/"
-                target="_blank" class="nomination-item w-inline-block">
+              </a><a href="https://www.instagram.com/digitalsoftwaremarket/" target="_blank"
+                class="nomination-item w-inline-block">
                 <div class="nomination big">Digital Software Market/div>
               </a><a href="https://sadaqaty.fixare.studio/projects/douty-marketplace" target="_blank"
                 class="nomination-item w-inline-block">
@@ -822,8 +979,7 @@
               </a><a href="https://sadaqaty.fixare.studio/projects/mailfusion" target="_blank"
                 class="nomination-item w-inline-block">
                 <div class="nomination">MailFusion</div>
-              </a><a href="https://sadaqaty.fixare.studio/projects/vceela/"
-                class="nomination-item w-inline-block">
+              </a><a href="https://sadaqaty.fixare.studio/projects/vceela/" class="nomination-item w-inline-block">
                 <div class="nomination">Vceela</div>
               </a><a href="https://sadaqaty.fixare.studio/projects/whisperpro" target="_blank"
                 class="nomination-item w-inline-block">
@@ -858,174 +1014,25 @@
     </section>
     <section class="section certificate en">
       <div class="certificate-item-wrapper">
-        <div class="certificate-item">
-          <div class="logo-n-name"><img src="/assets/Fixare Studio.png" loading="lazy" alt=""
-              class="startech-logo-full" />
-            <div id="user-name" class="certificate-name"></div>
+        <div class="certificates-grid">
+          <div class="certificate-item">
+            <div class="certificate-card">
+              <div class="card-background"></div>
+              <div class="card-content">
+                <h3 class="card-title">
+                  <div id="user-name" class="certificate-name"></div>
+                </h3>
+                <p class="card-tagline">Your Business Deserves Better Systems.</p>
+                <div class="card-info">
+                  <p>We create modern, efficient tools that save time and drive results.</p>
+                </div>
+                <div class="card-button-wrapper">
+                  <a href="https://calendly.com/hi-sharafat/meeting" target="_blank" class="card-button">BOOK A
+                    MEETING</a>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="certificate-text-content">
-            <div class="nomination-title-wrap">
-              <div class="text-14-regular">Your Business Deserves Better Systems</div>
-              <div class="nomination-name">We create modern, <br>efficient tools that save time and drive results.</div>
-            </div><a href="https://calendly.com/hi-sharafat/meeting" target="_blank"
-              class="glowing-wrapper glowing-wrapper-active w-inline-block">
-              <div class="glowing-wrapper-animations">
-                <div class="glowing-wrapper-glow"></div>
-                <div class="glowing-wrapper-mask-wrapper">
-                  <div class="glowing-wrapper-mask"></div>
-                </div>
-              </div>
-              <div class="glowing-wrapper-borders-masker">
-                <div class="glowing-wrapper-borders"></div>
-              </div>
-              <div class="glowing-wrapper-button">
-                <div class="styles---glowing-button w-embed">
-                  <style>
-                    * {
-                      -webkit-font-smoothing: antialiased;
-                      -moz-osx-font-smoothing: grayscale;
-                      font-smoothing: antialiased;
-                      text-rendering: optimizeLegibility;
-                    }
-
-                    html {
-                      font-size: calc(0.625rem + 0.41666666666666663vw);
-                    }
-
-                    @media screen and (max-width:1920px) {
-                      html {
-                        font-size: calc(0.625rem + 0.41666666666666674vw);
-                      }
-                    }
-
-                    @media screen and (max-width:1440px) {
-                      html {
-                        font-size: calc(0.8126951092611863rem + 0.20811654526534862vw);
-                      }
-                    }
-
-                    @media screen and (max-width:479px) {
-                      html {
-                        font-size: calc(0.7494769874476988rem + 0.8368200836820083vw);
-                      }
-                    }
-
-
-                    .glowing-wrapper-button:after {
-                      background: radial-gradient(85% 120% at 50% 120%, rgba(255, 255, 255, .24) 0%, rgba(255, 255, 255, 0) 100%);
-                      border-radius: 999px;
-                      content: "";
-                      height: calc(100% + 4px);
-                      left: -2px;
-                      opacity: 0;
-                      position: absolute;
-                      top: -2px;
-                      transition: 1s all;
-                      width: calc(100% + 4px)
-                    }
-
-                    .glowing-wrapper-button:hover:after {
-                      opacity: .7
-                    }
-
-
-                    .glowing-wrapper-active .glowing-wrapper-animations,
-                    .glowing-wrapper-active .glowing-wrapper-borders-masker {
-                      opacity: 1
-                    }
-
-                    .glowing-wrapper-animations:before,
-                    .glowing-wrapper-borders:before {
-                      content: "";
-                      float: left;
-                      padding-top: 100%
-                    }
-
-                    .glowing-wrapper-animations:after,
-                    .glowing-wrapper-borders:after {
-                      clear: both;
-                      content: "";
-                      display: block
-                    }
-
-                    .glowing-wrapper-animations {
-                      pointer-events: none;
-                    }
-
-                    .glowing-wrapper-animations * {
-                      height: 100%;
-                      left: 0;
-                      position: absolute;
-                      top: 0;
-                      width: 100%
-                    }
-
-                    .glowing-wrapper-borders,
-                    .glowing-wrapper-glow,
-                    .glowing-wrapper-mask {
-                      animation: borderTurn 2.5s infinite linear;
-                      background-image: conic-gradient(from 0 at 50% 50%, rgba(255, 255, 255) 0deg, rgba(255, 255, 255, 0) 60deg, rgba(255, 255, 255, 0) 310deg, rgba(255, 255, 255) 360deg);
-                      background-position: center center;
-                      background-repeat: no-repeat;
-                      background-size: cover
-                    }
-
-                    .glowing-wrapper-mask-wrapper {
-                      -webkit-mask: url("data:image/svg+xml,url('data:image/svg+xml,%253Csvg width='28' height='24' viewBox='0 0 28 24' fill='none' xmlns='http://www.w3.org/2000/svg'%253E%253Crect width='28' height='24' fill='black'/%253E%253C/svg%253E%250A');");
-                      mask: url("data:image/svg+xml,url('data:image/svg+xml,%253Csvg width='28' height='24' viewBox='0 0 28 24' fill='none' xmlns='http://www.w3.org/2000/svg'%253E%253Crect width='28' height='24' fill='black'/%253E%253C/svg%253E%250A');");
-                      mask-repeat: repeat;
-                      -webkit-mask-size: auto;
-                      mask-size: auto
-                    }
-
-                    .glowing-wrapper-borders {
-                      animation-name: borderTurnWithTranslate
-                    }
-
-                    .glowing-wrapper-borders-masker {
-                      content: "";
-                      inset: 0;
-                      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-                      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-                      mask-composite: xor;
-                      -webkit-mask-composite: xor;
-                      mask-composite: exclude;
-                      pointer-events: none;
-                    }
-
-                    @keyframes borderTurn {
-                      0% {
-                        transform: rotate(0)
-                      }
-
-                      to {
-                        transform: rotate(360deg)
-                      }
-                    }
-
-                    @keyframes borderTurnWithTranslate {
-                      0% {
-                        transform: translate(-50%, -50%) rotate(0)
-                      }
-
-                      to {
-                        transform: translate(-50%, -50%) rotate(360deg)
-                      }
-                    }
-                  </style>
-                </div>
-                <div class="button-text">Let's Get Started</div>
-              </div>
-            </a>
-          </div><img
-            src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660301404c389e967abd179a_certificate (1).png"
-            loading="lazy" sizes="(max-width: 479px) 100vw, (max-width: 767px) 87vw, (max-width: 991px) 68vw, 44vw"
-            srcset="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660301404c389e967abd179a_certificate%20(1)-p-500.png 500w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660301404c389e967abd179a_certificate%20(1).png 821w"
-            alt="" class="image-5" /><img
-            src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6605682feb3a7adbd197d9ef_Frame 1844.png"
-            loading="lazy" sizes="(max-width: 479px) 440px, 100vw"
-            srcset="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6605682feb3a7adbd197d9ef_Frame%201844-p-500.png 500w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6605682feb3a7adbd197d9ef_Frame%201844.png 626w"
-            alt="Первая премия для стартапов в России" class="certificate-3d-mobile en" />
         </div>
       </div>
     </section>
@@ -1038,11 +1045,10 @@
             <h2 data-a-delay="0.2" data-a-split="line" data-obs-once="true" class="h2 large-height">October 13th</h2>
           </div>
           <div class="place-features">
-            <div class="place-img-container"><img
-                src="assets/award.png"
-                loading="lazy" sizes="(max-width: 479px) 100vw, (max-width: 991px) 364px, 35vw"
-                srcset="assets/award.png 500w, assets/award.png 915w"
-                alt="Премия стартапов Startech Awards ВЭБ Центр" class="place-img" />
+            <div class="place-img-container"><img src="assets/award.png" loading="lazy"
+                sizes="(max-width: 479px) 100vw, (max-width: 991px) 364px, 35vw"
+                srcset="assets/award.png 500w, assets/award.png 915w" alt="Премия стартапов Startech Awards ВЭБ Центр"
+                class="place-img" />
               <div class="location-adress en"><img
                   src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/65fb26bbac50534dc46b10f7_location-sign-svgrepo-com 1.svg"
                   loading="lazy" alt="ВЭБ центр Премия для стартапов первая в России Startech Awards"
@@ -1058,7 +1064,8 @@
                   loading="lazy" alt="Информация о последних трендах, технологиях и инновациях в техносфере в Москве"
                   class="_3d-icon-3" />
                 <div class="text-24">TEAM EXPERIENCE</div>
-                <div class="text-16-description">We built a complete solution for a real NASA challenge, working hands-on with space data and tight deadlines. 
+                <div class="text-16-description">We built a complete solution for a real NASA challenge, working
+                  hands-on with space data and tight deadlines.
                   The hackathon pushed our creativity, teamwork, and problem-solving to a new level.</div>
               </div>
               <div class="place-feature-item _2"><img
@@ -1066,7 +1073,8 @@
                   loading="lazy" alt="Получение фидбека от инвесторов и аналитиков по стартапу Startech Awards Москва"
                   class="_3d-icon" />
                 <div class="text-24">SKILL GROWTH</div>
-                <div class="text-16-description">We learned how to turn complex space problems into clear, workable systems. From rapid prototyping to data analysis 
+                <div class="text-16-description">We learned how to turn complex space problems into clear, workable
+                  systems. From rapid prototyping to data analysis
                   and UI design, the competition sharpened our technical and analytical skills.</div>
               </div>
               <div class="place-feature-item _1"><img
@@ -1075,7 +1083,8 @@
                   alt="Нетворкинг для фаундеров стартапов, инвесторов и партнеров в Москве Startech Awards"
                   class="_3d-icon-2" />
                 <div class="text-24">INDUSTRY INSIGHTS</div>
-                <div class="text-16-description">Judges and mentors reviewed our work and shared detailed feedback. We learned what makes a solution practical, 
+                <div class="text-16-description">Judges and mentors reviewed our work and shared detailed feedback. We
+                  learned what makes a solution practical,
                   scalable, and aligned with real NASA needs, giving us direction for future projects.</div>
               </div>
             </div>
@@ -1090,7 +1099,8 @@
             <h2 data-a-delay="0.2" data-a-split="line" data-obs-once="true"
               data-w-id="55243c2b-f73b-f3e3-e746-d7b1b148b905" class="h2 white">Your star is ready<br />to shine
               brighter</h2>
-            <div data-a-delay="0.4" data-a-split="line" data-obs-once="true" class="text-18-regular">Book a Meeting today!</div>
+            <div data-a-delay="0.4" data-a-split="line" data-obs-once="true" class="text-18-regular">Book a Meeting
+              today!</div>
           </div><a href="https://calendly.com/hi-sharafat/meeting" target="_blank"
             class="glowing-wrapper glowing-wrapper-active w-inline-block">
             <div class="glowing-wrapper-animations">
@@ -1241,7 +1251,8 @@
               <div class="button-text"> Book Now!</div>
             </div>
           </a>
-          <div data-a-delay="0.6" data-a-split="line" data-obs-once="true" class="text-15-regular">Consultation is free.</div>
+          <div data-a-delay="0.6" data-a-split="line" data-obs-once="true" class="text-15-regular">Consultation is free.
+          </div>
         </div>
       </div><img
         src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660c72994925829e79a58230_light (1).png"
@@ -1261,10 +1272,13 @@
               Organizers</h2>
             <div class="div-block-3">
               <div data-obs-once="true" data-a-split="line" data-a-delay="0.4" class="text-18-regular dark">
-                Fixare Studio is a creative tech agency focused on building smart, practical solutions for brands and businesses. 
-                Our mission is to help companies scale with strong design, clear communication, and efficient digital systems. 
-                We work with teams of all sizes to turn complex ideas into meaningful products that drive real impact.</div><a
-                data-w-id="d8502883-796d-ff4a-6692-91fb06dbb429" href="https://www.linkedin.com/company/fixare-studio/" target="_blank"
+                Fixare Studio is a creative tech agency focused on building smart, practical solutions for brands and
+                businesses.
+                Our mission is to help companies scale with strong design, clear communication, and efficient digital
+                systems.
+                We work with teams of all sizes to turn complex ideas into meaningful products that drive real impact.
+              </div><a data-w-id="d8502883-796d-ff4a-6692-91fb06dbb429"
+                href="https://www.linkedin.com/company/fixare-studio/" target="_blank"
                 class="link-arrow w-inline-block">
                 <div>Fixare-Studio LinkedIn</div>
                 <div class="arrow-btn-animated">
@@ -1328,8 +1342,8 @@
               </div>
             </div>
             <div class="faq-answer">
-              <p class="faq-answer-text">We build creative and tech-driven solutions for brands, including design, 
-                digital strategy, automation tools, and product development. Our focus is on clarity, efficiency, 
+              <p class="faq-answer-text">We build creative and tech-driven solutions for brands, including design,
+                digital strategy, automation tools, and product development. Our focus is on clarity, efficiency,
                 and measurable results.</p>
             </div>
           </div>
@@ -1342,7 +1356,8 @@
               </div>
             </div>
             <div class="faq-answer">
-              <p class="faq-answer-text">We Offer free Consultation so that you can ask and clearify any inquaries in your mind!</p>
+              <p class="faq-answer-text">We Offer free Consultation so that you can ask and clearify any inquaries in
+                your mind!</p>
             </div>
           </div>
           <div class="faq-wrap">
@@ -1354,8 +1369,10 @@
               </div>
             </div>
             <div class="faq-answer">
-              <p class="faq-answer-text">Yes. From branding and UI design to automation, development, and content support, 
-                we manage the full workflow so you get a complete, ready-to-use solution without managing multiple vendors.</p>
+              <p class="faq-answer-text">Yes. From branding and UI design to automation, development, and content
+                support,
+                we manage the full workflow so you get a complete, ready-to-use solution without managing multiple
+                vendors.</p>
             </div>
           </div>
         </div>
@@ -1372,12 +1389,14 @@
                 <div class="footer-contacts-left-content">
                   <div id="w-node-_42519f37-db99-f37e-0323-95ed41a00f94-f3c1ba09" class="contact-title">For partnership
                     inquiries:</div>
-                  <div class="text-15-regular left">Sharafat Ali<br /><span class="opacity-70">Founder and Creative Director</span></div>
+                  <div class="text-15-regular left">Sharafat Ali<br /><span class="opacity-70">Founder and Creative
+                      Director</span></div>
                   <div class="text-16-regular"><a href="mailto:sharafaty@fixare.studio"
                       class="link-footer">sharafaty@fixare.studio</a><br /></div>
                 </div>
                 <div id="w-node-_42519f37-db99-f37e-0323-95ed41a00f9f-f3c1ba09" class="footer-contacts-left-content">
-                  <div class="text-15-regular left">Sadaqat Ali<br /><span class="opacity-70">Co-Founder and Cybersecurity Director</span></div>
+                  <div class="text-15-regular left">Sadaqat Ali<br /><span class="opacity-70">Co-Founder and
+                      Cybersecurity Director</span></div>
                   <div class="text-16-regular"><a href="mailto:sadaqaty@fixare.studio"
                       class="link-footer">sadaqaty@fixare.studio</a><br /></div>
                 </div>
@@ -1394,10 +1413,9 @@
                   <div class="text-16-regular"><a href="mailto:info@fixare.studio"
                       class="link-footer">info@fixare.studio</a></div>
                   <div class="tg-footer-wrapper"><img loading="lazy"
-                      src="https://www.svgrepo.com/show/157006/linkedin.svg"
-                      alt="" class="tg-icon-small" />
-                    <div class="text-16-regular"><a href="https://www.linkedin.com/company/fixare-studio/" target="_blank"
-                        class="link-footer"> fixare-studio</a></div>
+                      src="https://www.svgrepo.com/show/157006/linkedin.svg" alt="" class="tg-icon-small" />
+                    <div class="text-16-regular"><a href="https://www.linkedin.com/company/fixare-studio/"
+                        target="_blank" class="link-footer"> fixare-studio</a></div>
                   </div>
                 </div>
               </div>
