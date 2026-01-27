@@ -48,6 +48,13 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
+        :root {
+            --tech-blue: #43b5ff;
+            --tech-cyan: #8be7ff;
+            --tech-space: #0b1a2b;
+            --tech-sand: #d8c6b2;
+        }
+
         .font-geist {
             font-family: 'Geist', 'Satoshi', sans-serif !important;
         }
@@ -67,6 +74,17 @@
             }
         }
         
+        @keyframes floatPulse {
+            0%, 100% {
+                transform: translateY(0px);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-12px);
+                opacity: 1;
+            }
+        }
+
         .animate-fade-in {
             animation: fadeIn 0.8s ease-out forwards;
         }
@@ -86,7 +104,85 @@
         .animate-fade-in-delay-4 {
             animation: fadeIn 0.8s ease-out 0.8s both;
         }
-        
+
+        .tech-grid {
+            background-image: radial-gradient(circle at 25% 20%, rgba(67, 181, 255, 0.18), transparent 55%),
+                radial-gradient(circle at 75% 0%, rgba(139, 231, 255, 0.25), transparent 45%),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(233, 244, 255, 0.35));
+        }
+
+        .tech-frame {
+            position: relative;
+            border: 1px solid rgba(11, 26, 43, 0.12);
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: 0 25px 70px rgba(11, 26, 43, 0.12);
+            border-radius: 36px;
+            backdrop-filter: blur(18px);
+            background: rgba(255, 255, 255, 0.78);
+            box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
+            border-radius: 32px;
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+        }
+
+        .tech-frame::before,
+        .tech-frame::after {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 24px;
+            pointer-events: none;
+        }
+
+        .tech-frame::before {
+            top: 18px;
+            left: 18px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .tech-frame::after {
+            right: 18px;
+            bottom: 18px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .orbital-glow {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.2), transparent 60%);
+            filter: blur(30px);
+            opacity: 0.8;
+            animation: floatPulse 12s ease-in-out infinite;
+        }
+
+        .floating-badge {
+            animation: floatPulse 8s ease-in-out infinite;
+        }
+
+        .glass-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            box-shadow: 0 20px 55px rgba(15, 23, 42, 0.08);
+            border-radius: 28px;
+            backdrop-filter: blur(14px);
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            border-radius: 26px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+        }
+
         /* Smooth scrolling */
         html {
             scroll-behavior: smooth;
@@ -98,16 +194,16 @@
         }
         
         ::-webkit-scrollbar-track {
-            background: #0f172a;
+            background: #e0e7ff;
         }
         
         ::-webkit-scrollbar-thumb {
-            background: #3b82f6;
+            background: linear-gradient(120deg, var(--tech-blue), var(--tech-indigo));
             border-radius: 4px;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: #2563eb;
+            background: linear-gradient(120deg, #38bdf8, #818cf8);
         }
     </style>
 </head>
