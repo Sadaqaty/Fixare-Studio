@@ -116,14 +116,53 @@
                                 return;
                             }
 
+                            // 0b. Talk Mode Toggle
+                            if (text.startsWith('/talk')) {
+                                const target = text.replace('/talk', '').trim();
+                                if (!target || target.toLowerCase() === 'off') {
+                                    sessionStorage.removeItem('vt_talk_lock');
+                                    this.replyToTelegram(msg.chat.id, 'Talk Mode deactivated. 🔓');
+                                } else {
+                                    sessionStorage.setItem('vt_talk_lock', target);
+                                    this.replyToTelegram(msg.chat.id, `Conversational lock active for [${target}]. All subsequent messages will be sent directly to them! 🔒💬`);
+                                    this.showToast(`Admin is now talking to ${target} via Talk Mode.`);
+                                }
+                                return;
+                            }
+
                             // drafting check: if we have a pending cmd, and this is NOT a new cmd, use this text
                             const pendingCmd = sessionStorage.getItem('vt_pending_cmd');
+                            const talkLock = sessionStorage.getItem('vt_talk_lock');
                             const isNewCmd = text.startsWith('/') || text.startsWith('[');
                             
+                            // 0c. Smart Reply Check (Native Telegram Reply)
+                            if (msg.reply_to_message && msg.reply_to_message.text && !isNewCmd && !sessionStorage.getItem(`processed_${msgId}`)) {
+                                const replyToText = msg.reply_to_message.text;
+                                const nameMatch = replyToText.match(/from (.*?)\s\(/i); // Extracts "John" from "Message from John (US):"
+                                if (nameMatch && nameMatch[1]) {
+                                    const targetName = nameMatch[1].trim();
+                                    sessionStorage.setItem(`processed_${msgId}`, 'true');
+                                    if (this.visitor.name === targetName) {
+                                        this.receiveChatReply(text, msgId);
+                                    }
+                                    return;
+                                }
+                            }
+
+                            // priority 1: Pending Commands (like /ann waiting for text)
                             if (pendingCmd && !isNewCmd && !sessionStorage.getItem(`processed_${msgId}`)) {
-                                sessionStorage.setItem(`processed_${msgId}`, 'true'); // mark this msg as used
+                                sessionStorage.setItem(`processed_${msgId}`, 'true'); 
                                 this.executeCommand(pendingCmd, text, msgId);
                                 sessionStorage.removeItem('vt_pending_cmd');
+                                return;
+                            }
+
+                            // priority 2: Talk Lock (conversational mode)
+                            if (talkLock && !isNewCmd && !sessionStorage.getItem(`processed_${msgId}`)) {
+                                sessionStorage.setItem(`processed_${msgId}`, 'true');
+                                if (this.visitor.name === talkLock) {
+                                    this.receiveChatReply(text, msgId);
+                                }
                                 return;
                             }
 
@@ -187,7 +226,8 @@
                 poll: 'Please send the poll (Question | Opt1 | Opt2)! 📊',
                 social: 'Please send the social proof message! 🤝',
                 redirect: 'Please send the destination URL! 🛸',
-                hire: 'Type "show" or "hide" for the hiring badge! 💼'
+                hire: 'Type "show" or "hide" for the hiring badge! 💼',
+                talk: 'Which user would you like to talk to? 🗣️'
             };
             return prompts[cmd] || `Waiting for ${cmd.toUpperCase()} content... 📥`;
         },
@@ -383,7 +423,7 @@
             if (!text) return;
 
             this.addChatMessageToUI(text, 'visitor');
-            this.trackAction('Chat Message', text);
+            this.sendNotification('Support Chat', `Message from ${this.visitor.name} (${this.visitor.country}): ${text}`);
             input.value = '';
         },
 
