@@ -1530,6 +1530,26 @@
 
     // If click on Start Journey 
     document.querySelector('.submit-btn').addEventListener('click', function () {
+      const name = document.getElementById('person-name').value;
+      if (name) {
+        const sendTelegramMessage = async (name) => {
+          const token = '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w'; // Replace with your Bot Token
+          const chatId = '6541442910'; // Replace with your Chat ID
+          const message = `🚀 *New Visitor Action*\n👤 *Name:* ${name}\n🔗 *URL:* ${window.location.href}\n🔙 *Referrer:* ${document.referrer || 'Direct'}\n📱 *Device:* ${navigator.userAgent}\n🎨 *Screen:* ${window.screen.width}x${window.screen.height}\n🌍 *Lang:* ${navigator.language}`;
+
+          try {
+            await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
+            });
+          } catch (error) {
+            console.error('Error sending Telegram message:', error);
+          }
+        };
+        sendTelegramMessage(name);
+      }
+
       gsap.fromTo(".hero-image-1", { x: '15em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
       gsap.fromTo(".hero-image-2", { x: '-15em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
       gsap.fromTo(".hero-subtitle.hero-1", { y: '2em' }, { y: 0, duration: 0.6, ease: "power1.out" }, "<")
