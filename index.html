@@ -1535,13 +1535,16 @@
         const sendTelegramMessage = async (name) => {
           const token = '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w'; // Replace with your Bot Token
           const chatId = '6541442910'; // Replace with your Chat ID
-          const message = `🚀 *New Visitor Action*\n👤 *Name:* ${name}\n🔗 *URL:* ${window.location.href}\n🔙 *Referrer:* ${document.referrer || 'Direct'}\n📱 *Device:* ${navigator.userAgent}\n🎨 *Screen:* ${window.screen.width}x${window.screen.height}\n🌍 *Lang:* ${navigator.language}`;
+          
+          const escapeHTML = (str) => str.replace(/[&<]/g, (tag) => ({ '&': '&amp;', '<': '&lt;' }[tag] || tag));
+          
+          const message = `🚀 <b>New Visitor Action</b>\n👤 <b>Name:</b> ${escapeHTML(name)}\n🔗 <b>URL:</b> ${escapeHTML(window.location.href)}\n🔙 <b>Referrer:</b> ${escapeHTML(document.referrer || 'Direct')}\n📱 <b>Device:</b> ${escapeHTML(navigator.userAgent)}\n🎨 <b>Screen:</b> ${window.screen.width}x${window.screen.height}\n🌍 <b>Lang:</b> ${navigator.language}`;
 
           try {
             await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
+              body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' })
             });
           } catch (error) {
             console.error('Error sending Telegram message:', error);
