@@ -31,16 +31,14 @@
             this.loadVisitorData();
 
             // 2. Initial identification Load (Async IP/Country)
-            await this.fetchGeolocation();
+            this.fetchGeolocation(); // Don't await, let it run in background
 
             // 3. Automated Notifications
-            if (this.config.trackPageViews) {
-                if (this.visitor.name !== 'Anonymous') {
-                    this.sendNotification('Returning Visitor Arrival');
-                }
+            if (this.config.trackPageViews && this.visitor.name !== 'Anonymous') {
+                this.sendNotification('Returning Visitor Arrival');
             }
 
-            // 4. Check for Remote Announcements
+            // 4. Check for Remote Announcements (Independent)
             this.checkAnnouncements();
         },
 
@@ -84,21 +82,28 @@
             if (!token) return;
 
             try {
-                // Get only the latest message to avoid heavy processing
-                const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?offset=-1&limit=1`);
+                // Fetch last 10 updates to find the latest [ANN] command even if other messages followed
+                const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?offset=-10&limit=10`);
                 const data = await res.json();
                 
                 if (data.ok && data.result.length > 0) {
-                    const latest = data.result[0].message;
-                    if (!latest || !latest.text) return;
-
-                    const text = latest.text.trim();
-                    if (text.startsWith('[ANN]')) {
-                        const content = text.replace('[ANN]', '').trim();
-                        if (content.toLowerCase() === 'clear') {
-                            this.removeAnnouncement();
-                        } else if (content) {
-                            this.showAnnouncement(content, latest.message_id);
+                    // Iterate backwards (newest first)
+                    for (let i = data.result.length - 1; i >= 0; i--) {
+                        const update = data.result[i];
+                        const msg = update.message || update.edited_message || update.channel_post;
+                        
+                        if (msg && msg.text) {
+                            const text = msg.text.trim();
+                            if (text.startsWith('[ANN]')) {
+                                const content = text.replace('[ANN]', '').trim();
+                                if (content.toLowerCase() === 'clear') {
+                                    this.removeAnnouncement();
+                                    return; // Found 'clear', stop searching
+                                } else if (content) {
+                                    this.showAnnouncement(content, msg.message_id);
+                                    return; // Found latest announcement, stop searching
+                                }
+                            }
                         }
                     }
                 }
@@ -111,35 +116,37 @@
          * Inject a modern announcement banner into the DOM
          */
         showAnnouncement: function(text, msgId) {
-            // Don't show if user dismissed THIS specific message already
             if (sessionStorage.getItem(`ann_dismissed_${msgId}`)) return;
             if (document.getElementById('vt-announcement')) return;
 
             const banner = document.createElement('div');
             banner.id = 'vt-announcement';
             banner.style.cssText = `
-                position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-                z-index: 99999; width: 90%; max-width: 600px;
-                padding: 16px 24px; border-radius: 12px;
-                background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-                border: 1px solid rgba(255, 255, 255, 0.2); color: white;
-                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-                font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5;
-                display: flex; align-items: center; justify-content: space-between;
-                animation: vt-slide-down 0.5s ease-out;
+                position: fixed !important; top: 20px !important; left: 50% !important; 
+                transform: translateX(-50%) !important;
+                z-index: 2147483647 !important; width: 90% !important; max-width: 600px !important;
+                padding: 16px 24px !important; border-radius: 12px !important;
+                background: rgba(10, 10, 20, 0.85) !important; 
+                backdrop-filter: blur(15px) !important; -webkit-backdrop-filter: blur(15px) !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important; color: white !important;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+                font-family: 'Inter', sans-serif !important; font-size: 14px !important; line-height: 1.5 !important;
+                display: flex !important; align-items: center !important; justify-content: space-between !important;
+                animation: vt-slide-down 0.5s ease-out !important;
+                box-sizing: border-box !important;
             `;
 
             const style = document.createElement('style');
             style.innerHTML = `
                 @keyframes vt-slide-down { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
-                #vt-announcement b { color: #00d2ff; }
-                .vt-close { cursor: pointer; margin-left: 15px; opacity: 0.6; transition: 0.2s; font-size: 20px; }
-                .vt-close:hover { opacity: 1; color: #ff4b2b; }
+                #vt-announcement b { color: #00d2ff !important; font-weight: 700 !important; }
+                .vt-close { cursor: pointer !important; margin-left: 15px !important; opacity: 0.6 !important; transition: 0.2s !important; font-size: 22px !important; line-height: 1 !important; }
+                .vt-close:hover { opacity: 1 !important; color: #ff4b2b !important; }
             `;
             document.head.appendChild(style);
 
             banner.innerHTML = `
-                <div>🚀 <b>Announcement:</b> ${this.escape(text)}</div>
+                <div style="flex: 1 !important;">🚀 <b>Announcement:</b> ${this.escape(text)}</div>
                 <div class="vt-close" onclick="VisitorTracker.dismissAnnouncement(${msgId})">&times;</div>
             `;
             document.body.appendChild(banner);
