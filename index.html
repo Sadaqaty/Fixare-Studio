@@ -1439,106 +1439,40 @@
   <script defer src="https://cdn.jsdelivr.net/gh/vallafederico/hacking-webflow@master/dist/text-split.03.js"></script>
   <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 
+  <script src="js/visitor-tracker.js"></script>
   <script>
-    //Typed words
-    var typed = new Typed('#preloaderText', {
-      strings: ['.', '..', '...'],
-      typeSpeed: 20,
-      loop: true,
-      showCursor: false,
-      attr: null,
+    // Initialize Visitor Tracking
+    VisitorTracker.init({
+      token: '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w',
+      chatIds: ['6541442910', '5904725547'],
+      siteName: 'Fixare Studio - Galactic Port'
     });
 
+    // Typed strings for preloader and intro
+    new Typed('#preloaderText', { strings: ['.', '..', '...'], typeSpeed: 20, loop: true, showCursor: false });
+    new Typed('#enter-subtitle', { strings: ['welcome to the galactic port, captain'], typeSpeed: 20, startDelay: 4000, loop: false, showCursor: false });
 
-    //Typed words
-    var typed = new Typed('#enter-subtitle', {
-      strings: ['welcome to the galactic port, captain'],
-      typeSpeed: 20,
-      startDelay: 4000,
-      loop: false,
-      showCursor: false,
-      attr: null,
-    });
 
-    // Visit Tracker
-    const visits = parseInt(localStorage.getItem('visitCount') || '0') + 1;
-    localStorage.setItem('visitCount', visits);
+    // Typed strings for preloader and intro
+    new Typed('#preloaderText', { strings: ['.', '..', '...'], typeSpeed: 20, loop: true, showCursor: false });
+    new Typed('#enter-subtitle', { strings: ['welcome to the galactic port, captain'], typeSpeed: 20, startDelay: 4000, loop: false, showCursor: false });
 
-    // Fetch Visitor IP and Country
-    let currentIpData = { ip: 'Unknown', country: 'Unknown' };
-    const fetchVisitorData = async () => {
-      const cached = sessionStorage.getItem('ipData');
-      if (cached) {
-        currentIpData = JSON.parse(cached);
-        return;
-      }
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        currentIpData = { ip: data.ip || 'Unknown', country: data.country_name || 'Unknown' };
-        sessionStorage.setItem('ipData', JSON.stringify(currentIpData));
-      } catch (e) { console.error('IP Fetch Error:', e); }
-    };
-
-    // Telegram Notification Logic
-    const sendTelegramMessage = async (name, visitorType = 'New') => {
-      const token = '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w';
-      const chatIds = ['6541442910', '5904725547']; // Can now add multiple Chat IDs in this array
-      const escapeHTML = (str) => String(str).replace(/[&<>"']/g, (tag) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[tag] || tag));
-      
-      const getReferrer = () => {
-        const ref = document.referrer || 'Direct';
-        const params = new URLSearchParams(window.location.search);
-        const utm = [];
-        ['utm_source', 'utm_medium', 'utm_campaign'].forEach(p => {
-          if (params.has(p)) utm.push(`${p.split('_')[1]}: ${params.get(p)}`);
-        });
-        return utm.length ? `${ref} [${utm.join(', ')}]` : ref;
-      };
-
-      const message = `🚀 <b>${visitorType} Visitor Action</b> (Visit #${visits})\n👤 <b>Name:</b> ${escapeHTML(name)}\n🌐 <b>IP:</b> ${escapeHTML(currentIpData.ip)}\n🌍 <b>Country:</b> ${escapeHTML(currentIpData.country)}\n🔗 <b>URL:</b> ${escapeHTML(window.location.href)}\n🔙 <b>Referrer:</b> ${escapeHTML(getReferrer())}\n📱 <b>Device:</b> ${escapeHTML(navigator.userAgent)}\n🎨 <b>Screen:</b> ${window.screen.width}x${window.screen.height}\n🌍 <b>Lang:</b> ${navigator.language}`;
-
-      const sendToChat = async (chatId) => {
-        try {
-          await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' })
-          });
-        } catch (error) {
-          console.error(`Error sending to ${chatId}:`, error);
-        }
-      };
-
-      await Promise.all(chatIds.map(id => sendToChat(id)));
-    };
-
-    // Функция для обновления имени пользователя
+    // Функция для обновления имени пользователя UI
     function updateUserName() {
       const name = document.getElementById('person-name').value;
-      // Обновляем содержимое элемента user-name
       document.getElementById("user-name").innerHTML = name;
       document.getElementById("enter-name").innerHTML = name;
-      // Сохраняем имя в localStorage
-      window.localStorage.setItem("name", name);
     }
 
-    // Load/Visitor Check logic wrapped in IP fetch
-    fetchVisitorData().finally(() => {
-      const name = window.localStorage.getItem("name");
-      if (name) {
-        document.getElementById("enterSection").style.display = "none";
-        document.getElementById("person-name").value = name;
-        sendTelegramMessage(name, 'Returning');
-      } else {
-        // Получаем элемент input
-        const inputElement = document.getElementById('person-name');
-        inputElement.addEventListener('input', updateUserName);
-      }
-    });
-
-    // Вызываем функцию updateUserName сразу, чтобы отобразить имя пользователя, если оно уже было сохранено
-    updateUserName();
+    // Initial identification check
+    const name = window.localStorage.getItem("name");
+    if (name) {
+      document.getElementById("enterSection").style.display = "none";
+      document.getElementById("person-name").value = name;
+      updateUserName();
+    } else {
+      document.getElementById('person-name').addEventListener('input', updateUserName);
+    }
 
 
 
@@ -1566,7 +1500,7 @@
 
       // If click on Skip  
       document.querySelector('.skip-wrapper').addEventListener('click', function () {
-        sendTelegramMessage('Anonymous', 'Skipped');
+        VisitorTracker.trackAction('Anonymous Visitor (Skipped)');
         gsap.fromTo(".hero-image-1", { x: '15em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
         gsap.fromTo(".hero-image-2", { x: '-15em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
         gsap.fromTo(".hero-subtitle.hero-1", { y: '2em' }, { y: 0, duration: 0.6, ease: "power1.out" }, "<")
@@ -1584,7 +1518,7 @@
     document.querySelector('.submit-btn').addEventListener('click', function () {
       const name = document.getElementById('person-name').value;
       if (name) {
-        sendTelegramMessage(name, 'New');
+        VisitorTracker.identify(name);
       }
 
       gsap.fromTo(".hero-image-1", { x: '15em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
