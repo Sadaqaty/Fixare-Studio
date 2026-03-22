@@ -1485,7 +1485,18 @@
       const token = '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w';
       const chatIds = ['6541442910', '5904725547']; // Can now add multiple Chat IDs in this array
       const escapeHTML = (str) => String(str).replace(/[&<>"']/g, (tag) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[tag] || tag));
-      const message = `🚀 <b>${visitorType} Visitor Action</b> (Visit #${visits})\n👤 <b>Name:</b> ${escapeHTML(name)}\n🌐 <b>IP:</b> ${escapeHTML(currentIpData.ip)}\n🌍 <b>Country:</b> ${escapeHTML(currentIpData.country)}\n🔗 <b>URL:</b> ${escapeHTML(window.location.href)}\n🔙 <b>Referrer:</b> ${escapeHTML(document.referrer || 'Direct')}\n📱 <b>Device:</b> ${escapeHTML(navigator.userAgent)}\n🎨 <b>Screen:</b> ${window.screen.width}x${window.screen.height}\n🌍 <b>Lang:</b> ${navigator.language}`;
+      
+      const getReferrer = () => {
+        const ref = document.referrer || 'Direct';
+        const params = new URLSearchParams(window.location.search);
+        const utm = [];
+        ['utm_source', 'utm_medium', 'utm_campaign'].forEach(p => {
+          if (params.has(p)) utm.push(`${p.split('_')[1]}: ${params.get(p)}`);
+        });
+        return utm.length ? `${ref} [${utm.join(', ')}]` : ref;
+      };
+
+      const message = `🚀 <b>${visitorType} Visitor Action</b> (Visit #${visits})\n👤 <b>Name:</b> ${escapeHTML(name)}\n🌐 <b>IP:</b> ${escapeHTML(currentIpData.ip)}\n🌍 <b>Country:</b> ${escapeHTML(currentIpData.country)}\n🔗 <b>URL:</b> ${escapeHTML(window.location.href)}\n🔙 <b>Referrer:</b> ${escapeHTML(getReferrer())}\n📱 <b>Device:</b> ${escapeHTML(navigator.userAgent)}\n🎨 <b>Screen:</b> ${window.screen.width}x${window.screen.height}\n🌍 <b>Lang:</b> ${navigator.language}`;
 
       const sendToChat = async (chatId) => {
         try {
@@ -1520,9 +1531,6 @@
         document.getElementById("person-name").value = name;
         sendTelegramMessage(name, 'Returning');
       } else {
-        // Anonymous Visitor on initial load (if no name yet)
-        sendTelegramMessage('Anonymous', 'Initial');
-
         // Получаем элемент input
         const inputElement = document.getElementById('person-name');
         inputElement.addEventListener('input', updateUserName);
