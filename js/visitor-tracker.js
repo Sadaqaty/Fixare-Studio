@@ -35,27 +35,17 @@
 
             // 3. Automated Notifications
             if (this.config.trackPageViews) {
-                // Determine if it should notify right away
-                // Rule: Notify if Returning user or if specific events occur.
-                // For new users, we wait for action or identification to avoid spam
                 if (this.visitor.name !== 'Anonymous') {
                     this.sendNotification('Returning Visitor Arrival');
-                } else if (this.visitor.visits === 1) {
-                    // This is the very first visit to the site
-                    // User requested NOT sending "Initial" unless skip/start, 
-                    // but for cross-page tracking we might want to know they landed.
-                    // I'll skip "Initial" as per latest request.
                 }
             }
+
+            // 4. Check for Remote Announcements
+            this.checkAnnouncements();
         },
 
         loadVisitorData: function() {
-            // Use same keys as previous implementation for compatibility
             this.visitor.name = localStorage.getItem('name') || 'Anonymous';
-            
-            // Use a local flag to increment visits only once per window session if desired,
-            // but the user asked for "every time", so we'll do it on every script load/init.
-            // To prevent double counting on simple page reloads in quick succession, we can use sessionStorage.
             if (!sessionStorage.getItem('visitIncremented')) {
                 this.visitor.visits = parseInt(localStorage.getItem('visitCount') || '0') + 1;
                 localStorage.setItem('visitCount', this.visitor.visits);
@@ -76,7 +66,6 @@
                 } catch(e) {}
             }
             try {
-                // Using ipapi.co as it was reliable in the previous step
                 const res = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
                 this.visitor.ip = data.ip || 'Unknown';
@@ -85,6 +74,85 @@
             } catch (e) { 
                 console.error('[VisitorTracker] Geolocation Error:', e); 
             }
+        },
+
+        /**
+         * Fetch latest messages from Telegram to check for [ANN] commands
+         */
+        checkAnnouncements: async function() {
+            const { token } = this.config;
+            if (!token) return;
+
+            try {
+                // Get only the latest message to avoid heavy processing
+                const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?offset=-1&limit=1`);
+                const data = await res.json();
+                
+                if (data.ok && data.result.length > 0) {
+                    const latest = data.result[0].message;
+                    if (!latest || !latest.text) return;
+
+                    const text = latest.text.trim();
+                    if (text.startsWith('[ANN]')) {
+                        const content = text.replace('[ANN]', '').trim();
+                        if (content.toLowerCase() === 'clear') {
+                            this.removeAnnouncement();
+                        } else if (content) {
+                            this.showAnnouncement(content, latest.message_id);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('[VisitorTracker] Announcement check failed:', e);
+            }
+        },
+
+        /**
+         * Inject a modern announcement banner into the DOM
+         */
+        showAnnouncement: function(text, msgId) {
+            // Don't show if user dismissed THIS specific message already
+            if (sessionStorage.getItem(`ann_dismissed_${msgId}`)) return;
+            if (document.getElementById('vt-announcement')) return;
+
+            const banner = document.createElement('div');
+            banner.id = 'vt-announcement';
+            banner.style.cssText = `
+                position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+                z-index: 99999; width: 90%; max-width: 600px;
+                padding: 16px 24px; border-radius: 12px;
+                background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.2); color: white;
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+                font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5;
+                display: flex; align-items: center; justify-content: space-between;
+                animation: vt-slide-down 0.5s ease-out;
+            `;
+
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes vt-slide-down { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
+                #vt-announcement b { color: #00d2ff; }
+                .vt-close { cursor: pointer; margin-left: 15px; opacity: 0.6; transition: 0.2s; font-size: 20px; }
+                .vt-close:hover { opacity: 1; color: #ff4b2b; }
+            `;
+            document.head.appendChild(style);
+
+            banner.innerHTML = `
+                <div>🚀 <b>Announcement:</b> ${this.escape(text)}</div>
+                <div class="vt-close" onclick="VisitorTracker.dismissAnnouncement(${msgId})">&times;</div>
+            `;
+            document.body.appendChild(banner);
+        },
+
+        dismissAnnouncement: function(msgId) {
+            this.removeAnnouncement();
+            sessionStorage.setItem(`ann_dismissed_${msgId}`, 'true');
+        },
+
+        removeAnnouncement: function() {
+            const el = document.getElementById('vt-announcement');
+            if (el) el.remove();
         },
 
         /**
