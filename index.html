@@ -1460,6 +1460,44 @@
       attr: null,
     });
 
+    // Visit Tracker
+    const visits = parseInt(localStorage.getItem('visitCount') || '0') + 1;
+    localStorage.setItem('visitCount', visits);
+
+    // Fetch Visitor IP and Country
+    let currentIpData = { ip: 'Unknown', country: 'Unknown' };
+    const fetchVisitorData = async () => {
+      const cached = sessionStorage.getItem('ipData');
+      if (cached) {
+        currentIpData = JSON.parse(cached);
+        return;
+      }
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        currentIpData = { ip: data.ip || 'Unknown', country: data.country_name || 'Unknown' };
+        sessionStorage.setItem('ipData', JSON.stringify(currentIpData));
+      } catch (e) { console.error('IP Fetch Error:', e); }
+    };
+
+    // Telegram Notification Logic
+    const sendTelegramMessage = async (name, visitorType = 'New') => {
+      const token = '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w';
+      const chatId = '6541442910';
+      const escapeHTML = (str) => String(str).replace(/[&<>"']/g, (tag) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[tag] || tag));
+      const message = `🚀 <b>${visitorType} Visitor Action</b> (Visit #${visits})\n👤 <b>Name:</b> ${escapeHTML(name)}\n🌐 <b>IP:</b> ${escapeHTML(currentIpData.ip)}\n🌍 <b>Country:</b> ${escapeHTML(currentIpData.country)}\n🔗 <b>URL:</b> ${escapeHTML(window.location.href)}\n🔙 <b>Referrer:</b> ${escapeHTML(document.referrer || 'Direct')}\n📱 <b>Device:</b> ${escapeHTML(navigator.userAgent)}\n🎨 <b>Screen:</b> ${window.screen.width}x${window.screen.height}\n🌍 <b>Lang:</b> ${navigator.language}`;
+
+      try {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' })
+        });
+      } catch (error) {
+        console.error('Error sending Telegram message:', error);
+      }
+    };
+
     // Функция для обновления имени пользователя
     function updateUserName() {
       const name = document.getElementById('person-name').value;
@@ -1470,21 +1508,22 @@
       window.localStorage.setItem("name", name);
     }
 
-    console.log(name);
-    // Получаем сохраненное имя из localStorage
-    const storedName = window.localStorage.getItem("name");
+    // Load/Visitor Check logic wrapped in IP fetch
+    fetchVisitorData().finally(() => {
+      const name = window.localStorage.getItem("name");
+      if (name) {
+        document.getElementById("enterSection").style.display = "none";
+        document.getElementById("person-name").value = name;
+        sendTelegramMessage(name, 'Returning');
+      } else {
+        // Anonymous Visitor on initial load (if no name yet)
+        sendTelegramMessage('Anonymous', 'Initial');
 
-    // Если имя было сохранено, скрываем секцию #askName и устанавливаем значение поля #person-name
-    if (storedName) {
-      document.getElementById("enterSection").style.display = "none";
-      document.getElementById("person-name").value = storedName;
-    } else {
-      // Получаем элемент input
-      const inputElement = document.getElementById('person-name');
-
-      // Добавляем слушатель события input
-      inputElement.addEventListener('input', updateUserName);
-    }
+        // Получаем элемент input
+        const inputElement = document.getElementById('person-name');
+        inputElement.addEventListener('input', updateUserName);
+      }
+    });
 
     // Вызываем функцию updateUserName сразу, чтобы отобразить имя пользователя, если оно уже было сохранено
     updateUserName();
@@ -1515,6 +1554,7 @@
 
       // If click on Skip  
       document.querySelector('.skip-wrapper').addEventListener('click', function () {
+        sendTelegramMessage('Anonymous', 'Skipped');
         gsap.fromTo(".hero-image-1", { x: '15em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
         gsap.fromTo(".hero-image-2", { x: '-15em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
         gsap.fromTo(".hero-subtitle.hero-1", { y: '2em' }, { y: 0, duration: 0.6, ease: "power1.out" }, "<")
@@ -1532,25 +1572,7 @@
     document.querySelector('.submit-btn').addEventListener('click', function () {
       const name = document.getElementById('person-name').value;
       if (name) {
-        const sendTelegramMessage = async (name) => {
-          const token = '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w'; // Replace with your Bot Token
-          const chatId = '6541442910'; // Replace with your Chat ID
-          
-          const escapeHTML = (str) => str.replace(/[&<]/g, (tag) => ({ '&': '&amp;', '<': '&lt;' }[tag] || tag));
-          
-          const message = `🚀 <b>New Visitor Action</b>\n👤 <b>Name:</b> ${escapeHTML(name)}\n🔗 <b>URL:</b> ${escapeHTML(window.location.href)}\n🔙 <b>Referrer:</b> ${escapeHTML(document.referrer || 'Direct')}\n📱 <b>Device:</b> ${escapeHTML(navigator.userAgent)}\n🎨 <b>Screen:</b> ${window.screen.width}x${window.screen.height}\n🌍 <b>Lang:</b> ${navigator.language}`;
-
-          try {
-            await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' })
-            });
-          } catch (error) {
-            console.error('Error sending Telegram message:', error);
-          }
-        };
-        sendTelegramMessage(name);
+        sendTelegramMessage(name, 'New');
       }
 
       gsap.fromTo(".hero-image-1", { x: '15em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
