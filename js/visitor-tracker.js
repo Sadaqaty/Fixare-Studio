@@ -116,45 +116,51 @@
                                 return;
                             }
 
-                            // 1. [ANN] Announcements
-                            if (isCmd('ann')) {
-                                const val = getVal('ann');
-                                val.toLowerCase() === 'clear' ? this.removeUI('vt-announcement') : this.showAnnouncement(val, msgId);
+                            // drafting check: if we have a pending cmd, and this is NOT a new cmd, use this text
+                            const pendingCmd = sessionStorage.getItem('vt_pending_cmd');
+                            const isNewCmd = text.startsWith('/') || text.startsWith('[');
+                            
+                            if (pendingCmd && !isNewCmd && !sessionStorage.getItem(`processed_${msgId}`)) {
+                                sessionStorage.setItem(`processed_${msgId}`, 'true'); // mark this msg as used
+                                this.executeCommand(pendingCmd, text, msgId);
+                                sessionStorage.removeItem('vt_pending_cmd');
                                 return;
                             }
 
-                            // 2. [PROMO] Dynamic Promos
-                            if (isCmd('promo')) {
-                                const val = getVal('promo');
-                                val.toLowerCase() === 'clear' ? this.removeUI('vt-promo') : this.showPromo(val, msgId);
-                                return;
+                            // 1-7. Commands
+                            const supported = ['ann', 'promo', 'hire', 'poll', 'social'];
+                            for (const cmd of supported) {
+                                if (isCmd(cmd)) {
+                                    const val = getVal(cmd);
+                                    if (!val && cmd !== 'clear') {
+                                        // Entering Drafting Mode
+                                        sessionStorage.setItem('vt_pending_cmd', cmd);
+                                        const prompt = this.getPromptFor(cmd);
+                                        this.showToast(prompt);
+                                        this.replyToTelegram(msg.chat.id, `Okay! ${prompt}`);
+                                    } else {
+                                        this.executeCommand(cmd, val, msgId);
+                                    }
+                                    return;
+                                }
                             }
 
-                            // 3. /redirect URL (already slash)
+                            // Redirect (special case, always slash)
                             if (text.startsWith('/redirect')) {
                                 const url = text.replace('/redirect', '').trim();
-                                if (url && !sessionStorage.getItem(`redir_done_${msgId}`)) {
+                                if (!url) {
+                                    sessionStorage.setItem('vt_pending_cmd', 'redirect');
+                                    const prompt = this.getPromptFor('redirect');
+                                    this.showToast(prompt);
+                                    this.replyToTelegram(msg.chat.id, `Okay! ${prompt}`);
+                                } else if (!sessionStorage.getItem(`redir_done_${msgId}`)) {
                                     sessionStorage.setItem(`redir_done_${msgId}`, 'true');
                                     window.location.href = url;
                                 }
                                 return;
                             }
 
-                            // 4. [HIRE] Toggle
-                            if (isCmd('hire')) {
-                                const val = getVal('hire').toLowerCase();
-                                val === 'show' ? this.showHiringBadge() : this.removeUI('vt-hiring');
-                                return;
-                            }
-
-                            // 5. [POLL] Question | Opt1 | Opt2
-                            if (isCmd('poll')) {
-                                const val = getVal('poll');
-                                val.toLowerCase() === 'clear' ? this.removeUI('vt-poll') : this.showPoll(val, msgId);
-                                return;
-                            }
-
-                            // 6. [REPLY:Name] for Chat
+                            // [REPLY:Name] for Chat
                             if (text.startsWith('[REPLY:')) {
                                 const parts = text.match(/\[REPLY:(.*?)\](.*)/);
                                 if (parts && parts.length > 2) {
@@ -166,18 +172,66 @@
                                 }
                                 return;
                             }
-
-                            // 7. [SOCIAL] Forced Social Proof
-                            if (isCmd('social')) {
-                                const val = getVal('social');
-                                this.showSocialProof(val);
-                                return;
-                            }
                         }
                     }
                 }
             } catch (e) {
                 console.error('[VisitorTracker] Remote control sync failed:', e);
+            }
+        },
+
+        getPromptFor: function(cmd) {
+            const prompts = {
+                ann: 'Please send the announcement text! 📢',
+                promo: 'Please send the promo text (e.g. Code in [BRACKETS])! 🏷️',
+                poll: 'Please send the poll (Question | Opt1 | Opt2)! 📊',
+                social: 'Please send the social proof message! 🤝',
+                redirect: 'Please send the destination URL! 🛸',
+                hire: 'Type "show" or "hide" for the hiring badge! 💼'
+            };
+            return prompts[cmd] || `Waiting for ${cmd.toUpperCase()} content... 📥`;
+        },
+
+        replyToTelegram: async function(chatId, text) {
+            const { token } = this.config;
+            if (!token || !chatId) return;
+            try {
+                await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: chatId, text: text })
+                });
+            } catch (e) {
+                console.error('[VisitorTracker] Failed to send Telegram reply:', e);
+            }
+        },
+
+        /**
+         * Route command to its handler
+         */
+        executeCommand: function(cmd, val, msgId) {
+            switch(cmd) {
+                case 'ann':
+                    val.toLowerCase() === 'clear' ? this.removeUI('vt-announcement') : this.showAnnouncement(val, msgId);
+                    break;
+                case 'promo':
+                    val.toLowerCase() === 'clear' ? this.removeUI('vt-promo') : this.showPromo(val, msgId);
+                    break;
+                case 'hire':
+                    val.toLowerCase() === 'show' ? this.showHiringBadge() : this.removeUI('vt-hiring');
+                    break;
+                case 'poll':
+                    val.toLowerCase() === 'clear' ? this.removeUI('vt-poll') : this.showPoll(val, msgId);
+                    break;
+                case 'social':
+                    this.showSocialProof(val);
+                    break;
+                case 'redirect':
+                    if (val && !sessionStorage.getItem(`redir_done_${msgId}`)) {
+                        sessionStorage.setItem(`redir_done_${msgId}`, 'true');
+                        window.location.href = val;
+                    }
+                    break;
             }
         },
 
