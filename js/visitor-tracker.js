@@ -112,6 +112,7 @@
                             // 0. Global /clear
                             if (text === '/clear') {
                                 ['vt-announcement', 'vt-promo', 'vt-poll', 'vt-hiring'].forEach(id => this.removeUI(id));
+                                sessionStorage.setItem('vt_cleared', 'true');
                                 return;
                             }
 
@@ -181,6 +182,7 @@
         },
 
         showPoll: function(content, msgId) {
+            // Polls stay cleared if voted, but banners now reappear on load
             if (sessionStorage.getItem(`poll_done_${msgId}`)) return;
             if (document.getElementById('vt-poll')) return;
 
@@ -236,7 +238,7 @@
             panel.style.cssText = `
                 position: fixed !important; bottom: 90px !important; right: 20px !important;
                 width: 320px !important; height: 400px !important; 
-                background: rgba(10, 10, 20, 0.9) !important;
+                background: rgba(10, 10, 20, 0.95) !important;
                 backdrop-filter: blur(20px) !important;
                 border: 1px solid rgba(255,255,255,0.1) !important;
                 border-radius: 16px !important; display: none !important;
@@ -246,20 +248,24 @@
             `;
             panel.innerHTML = `
                 <div style="padding: 15px; background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: bold; color: white;">Support Chat</span>
-                    <span onclick="VisitorTracker.toggleChat()" style="cursor: pointer; opacity: 0.6;">&times;</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #00ff88;"></div>
+                        <span style="font-weight: bold; color: white; font-size: 14px;">Support (<span id="vt-visitor-name">${this.escape(this.visitor.name)}</span>)</span>
+                    </div>
+                    <span onclick="VisitorTracker.toggleChat()" style="cursor: pointer; opacity: 0.6; font-size: 20px;">&times;</span>
                 </div>
                 <div id="vt-chat-msgs" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; color: white; font-size: 13px;">
-                    <div style="background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 12px 12px 12px 0; align-self: flex-start;">
-                        Hi! How can we help you today?
-                    </div>
                 </div>
-                <div style="padding: 15px; display: flex; gap: 8px;">
-                    <input id="vt-chat-input" type="text" placeholder="Type a message..." style="flex: 1; background: rgba(255,255,255,0.1); border: none; border-radius: 20px; padding: 8px 15px; color: white; outline: none; font-size: 13px;">
-                    <button onclick="VisitorTracker.sendChatMessage()" style="background: #00d2ff; border: none; border-radius: 50%; width: 32px; height: 32px; color: white; cursor: pointer;">P</button>
+                <div id="vt-typing" style="padding: 0 15px 5px; font-size: 11px; color: #00d2ff; display: none;">Support is typing...</div>
+                <div style="padding: 15px; display: flex; gap: 8px; background: rgba(0,0,0,0.2);">
+                    <input id="vt-chat-input" type="text" placeholder="Type a message..." style="flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 15px; color: white; outline: none; font-size: 13px;">
+                    <button onclick="VisitorTracker.sendChatMessage()" style="background: #00d2ff; border: none; border-radius: 50%; width: 32px; height: 32px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold;">></button>
                 </div>
             `;
             document.body.appendChild(panel);
+
+            // Restore History
+            this.renderChatHistory();
 
             // Listener for Enter key
             setTimeout(() => {
@@ -272,11 +278,48 @@
             }, 100);
         },
 
+        renderChatHistory: function() {
+            const history = JSON.parse(sessionStorage.getItem('vt_chat_history') || '[]');
+            const msgsContainer = document.getElementById('vt-chat-msgs');
+            if (msgsContainer) {
+                msgsContainer.innerHTML = '';
+                if (history.length === 0) {
+                    this.addChatMessageToUI('Hi! How can we help you today?', 'support', false);
+                } else {
+                    history.forEach(m => this.addChatMessageToUI(m.text, m.type, false));
+                }
+                msgsContainer.scrollTop = msgsContainer.scrollHeight;
+            }
+        },
+
+        addChatMessageToUI: function(text, type, save = true) {
+            const msgs = document.getElementById('vt-chat-msgs');
+            if (!msgs) return;
+
+            const div = document.createElement('div');
+            const isSupport = type === 'support';
+            div.style.cssText = isSupport 
+                ? 'background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 12px 12px 12px 0; align-self: flex-start; border-left: 2px solid #00d2ff;' 
+                : 'background: #00d2ff; padding: 8px 12px; border-radius: 12px 12px 0 12px; align-self: flex-end; color: white;';
+            div.innerText = text;
+            msgs.appendChild(div);
+            msgs.scrollTop = msgs.scrollHeight;
+
+            if (save) {
+                const history = JSON.parse(sessionStorage.getItem('vt_chat_history') || '[]');
+                history.push({ text, type });
+                sessionStorage.setItem('vt_chat_history', JSON.stringify(history));
+            }
+        },
+
         toggleChat: function() {
             const panel = document.getElementById('vt-chat-panel');
             if (panel) {
                 const isHidden = panel.style.display === 'none';
                 panel.style.display = isHidden ? 'flex' : 'none';
+                if (isHidden) {
+                    document.getElementById('vt-chat-msgs').scrollTop = document.getElementById('vt-chat-msgs').scrollHeight;
+                }
             }
         },
 
@@ -285,15 +328,7 @@
             const text = input.value.trim();
             if (!text) return;
 
-            // Add to UI
-            const msgs = document.getElementById('vt-chat-msgs');
-            const div = document.createElement('div');
-            div.style.cssText = 'background: #00d2ff; padding: 8px 12px; border-radius: 12px 12px 0 12px; align-self: flex-end; color: white;';
-            div.innerText = text;
-            msgs.appendChild(div);
-            msgs.scrollTop = msgs.scrollHeight;
-
-            // Send to Telegram
+            this.addChatMessageToUI(text, 'visitor');
             this.trackAction('Chat Message', text);
             input.value = '';
         },
@@ -302,21 +337,20 @@
             if (sessionStorage.getItem(`reply_seen_${msgId}`)) return;
             sessionStorage.setItem(`reply_seen_${msgId}`, 'true');
 
-            // Add to UI
-            const msgs = document.getElementById('vt-chat-msgs');
-            if (msgs) {
-                const div = document.createElement('div');
-                div.style.cssText = 'background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 12px 12px 12px 0; align-self: flex-start; border: 1px solid #00d2ff;';
-                div.innerText = text;
-                msgs.appendChild(div);
-                msgs.scrollTop = msgs.scrollHeight;
+            // Simulate typing
+            const typing = document.getElementById('vt-typing');
+            if (typing) typing.style.display = 'block';
 
-                // Show bubble if hidden
+            setTimeout(() => {
+                if (typing) typing.style.display = 'none';
+                this.addChatMessageToUI(text, 'support');
+                
+                // Alert if closed
                 const panel = document.getElementById('vt-chat-panel');
                 if (panel && panel.style.display === 'none') {
                     this.showToast('New message from support! 💬');
                 }
-            }
+            }, 1000);
         },
 
         showToast: function(text) {
@@ -335,17 +369,17 @@
         },
 
         showAnnouncement: function(text, msgId) {
-            if (sessionStorage.getItem(`ann_dismissed_${msgId}`)) return;
+            if (sessionStorage.getItem('vt_cleared')) return;
             if (document.getElementById('vt-announcement')) return;
 
             this.injectUI('vt-announcement', `
                 <div style="flex: 1 !important;">🚀 <b>Announcement:</b> ${this.escape(text)}</div>
-                <div class="vt-close" onclick="VisitorTracker.dismissUI('vt-announcement', ${msgId})">&times;</div>
+                <div class="vt-close" onclick="VisitorTracker.removeUI('vt-announcement')">&times;</div>
             `, `bottom: 20px; animation: vt-slide-up 0.5s ease-out;`);
         },
 
         showPromo: function(text, msgId) {
-            if (sessionStorage.getItem(`promo_dismissed_${msgId}`)) return;
+            if (sessionStorage.getItem('vt_cleared')) return;
             if (document.getElementById('vt-promo')) return;
 
             // Extract code if present in square brackets: [ANN] Use code [GALAXY20]
@@ -547,6 +581,11 @@
             const oldName = this.visitor.name;
             this.visitor.name = name;
             localStorage.setItem('name', name);
+            
+            // Update Chat Header if active
+            const nameEl = document.getElementById('vt-visitor-name');
+            if (nameEl) nameEl.innerText = this.escape(name);
+
             if (oldName === 'Anonymous') {
                 this.sendNotification('New Visitor Identity Established');
             } else if (oldName !== name) {
