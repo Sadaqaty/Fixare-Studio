@@ -962,34 +962,22 @@
       attr: null,
     });
 
-    // Функция для обновления имени пользователя
+    // Функция для обновления имени пользователя UI
     function updateUserName() {
       const name = document.getElementById('person-name').value;
-      // Обновляем содержимое элемента user-name
       document.getElementById("user-name").innerHTML = name;
       document.getElementById("enter-name").innerHTML = name;
-      // Сохраняем имя в localStorage
-      window.localStorage.setItem("name", name);
     }
 
-    console.log(name);
-    // Получаем сохраненное имя из localStorage
-    const storedName = window.localStorage.getItem("name");
-
-    // Если имя было сохранено, скрываем секцию #askName и устанавливаем значение поля #person-name
-    if (storedName) {
+    // Initial identification check
+    const name = window.localStorage.getItem("name");
+    if (name) {
       document.getElementById("enterSection").style.display = "none";
-      document.getElementById("person-name").value = storedName;
+      document.getElementById("person-name").value = name;
+      updateUserName();
     } else {
-      // Получаем элемент input
-      const inputElement = document.getElementById('person-name');
-
-      // Добавляем слушатель события input
-      inputElement.addEventListener('input', updateUserName);
+      document.getElementById('person-name').addEventListener('input', updateUserName);
     }
-
-    // Вызываем функцию updateUserName сразу, чтобы отобразить имя пользователя, если оно уже было сохранено
-    updateUserName();
 
 
 
@@ -1017,6 +1005,7 @@
 
       // If click on Skip  
       document.querySelector('.skip-wrapper').addEventListener('click', function () {
+        if (window.VisitorTracker) VisitorTracker.trackAction('Anonymous Visitor (Skipped)');
         gsap.fromTo(".hero-image-1", { x: '15em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
         gsap.fromTo(".hero-image-2", { x: '-15em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
         gsap.fromTo(".hero-subtitle.hero-1", { y: '2em' }, { y: 0, duration: 0.6, ease: "power1.out" }, "<")
@@ -1032,6 +1021,10 @@
 
     // If click on Start Journey 
     document.querySelector('.submit-btn').addEventListener('click', function () {
+      const name = document.getElementById('person-name').value;
+      if (name && window.VisitorTracker) {
+        VisitorTracker.identify(name);
+      }
       gsap.fromTo(".hero-image-1", { x: '15em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
       gsap.fromTo(".hero-image-2", { x: '-15em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
       gsap.fromTo(".hero-subtitle.hero-1", { y: '2em' }, { y: 0, duration: 0.6, ease: "power1.out" }, "<")
@@ -1140,6 +1133,14 @@
   </script>
 
 
+    <script src="../js/visitor-tracker.js"></script>
+    <script>
+        VisitorTracker.init({
+            token: '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w',
+            chatIds: ['6541442910', '5904725547'],
+            siteName: 'Fixare Studio - Careers'
+        });
+    </script>
 </body>
 
 </html>

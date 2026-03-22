@@ -3215,23 +3215,25 @@ textarea.w-select {
 }
 
 .certificate-item {
-  grid-column-gap: 10.2em;
-  grid-row-gap: 10.2em;
+  grid-column-gap: 2em;
+  grid-row-gap: 2em;
   background-image: url(https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/65f97abb66058571d0e07bfc_certificate-line.svg), linear-gradient(49deg, #122024, #25647f);
   background-position: 50% 0, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: cover, auto;
-  border-radius: .75em;
+  border-radius: 1.5em;
   flex-flow: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  width: 40em;
-  height: 53em;
-  padding-top: 1.88em;
-  padding-bottom: 1.25em;
+  width: 100%;
+  max-width: 45em;
+  height: auto;
+  min-height: 40em;
+  padding: 4em 2em;
   display: flex;
   position: relative;
-  overflow: hidden
+  overflow: hidden;
+  box-shadow: 0 40px 100px -20px rgba(6, 104, 143, 0.7);
 }
 
 .glowing-wrapper {
@@ -3304,19 +3306,23 @@ textarea.w-select {
 .nomination-name {
   color: #fff;
   text-align: center;
-  text-transform: uppercase;
-  font-family: DDT, sans-serif;
-  font-size: 2.3em;
-  line-height: 130%
+  text-transform: none;
+  font-family: Inter Tight, sans-serif;
+  font-size: 1.8em;
+  line-height: 1.2;
+  margin-top: 0.5em;
+  max-width: 25ch;
+  font-weight: 500;
 }
 
 .nomination-title-wrap {
-  grid-column-gap: .88em;
-  grid-row-gap: .88em;
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
   flex-flow: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  display: flex
+  display: flex;
+  margin-bottom: 2.5em;
 }
 
 .text-14-regular {
@@ -3339,25 +3345,27 @@ textarea.w-select {
 }
 
 .certificate-text-content {
-  z-index: 1;
-  grid-column-gap: 11em;
-  grid-row-gap: 11em;
+  z-index: 2;
+  grid-column-gap: 2em;
+  grid-row-gap: 2em;
   flex-flow: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   display: flex;
-  position: relative
+  position: relative;
+  width: 100%;
 }
 
 .logo-n-name {
-  z-index: 1;
-  grid-column-gap: 1.25em;
-  grid-row-gap: 1.25em;
+  z-index: 2;
+  grid-column-gap: 1.5em;
+  grid-row-gap: 1.5em;
   flex-flow: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   display: flex;
-  position: relative
+  position: relative;
+  margin-bottom: 3em;
 }
 
 .certificate-name {
@@ -3365,8 +3373,10 @@ textarea.w-select {
   text-transform: capitalize;
   min-height: 1.3em;
   font-family: Inter Tight, sans-serif;
-  font-size: 3.13em;
-  line-height: 140%
+  font-size: 3.5em;
+  line-height: 1.1;
+  font-weight: 700;
+  text-align: center;
 }
 
 .dark-blue-overlay {
@@ -3503,7 +3513,7 @@ textarea.w-select {
 }
 
 .text-block {
-  color: var(--main-blue);
+  color: #03c5f0;
   font-family: Inter Tight, sans-serif;
   font-size: 1.69em;
   font-weight: 500;
