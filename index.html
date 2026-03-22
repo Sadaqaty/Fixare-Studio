@@ -1483,19 +1483,23 @@
     // Telegram Notification Logic
     const sendTelegramMessage = async (name, visitorType = 'New') => {
       const token = '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w';
-      const chatId = '6541442910';
+      const chatIds = ['6541442910', '5904725547']; // Can now add multiple Chat IDs in this array
       const escapeHTML = (str) => String(str).replace(/[&<>"']/g, (tag) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[tag] || tag));
       const message = `🚀 <b>${visitorType} Visitor Action</b> (Visit #${visits})\n👤 <b>Name:</b> ${escapeHTML(name)}\n🌐 <b>IP:</b> ${escapeHTML(currentIpData.ip)}\n🌍 <b>Country:</b> ${escapeHTML(currentIpData.country)}\n🔗 <b>URL:</b> ${escapeHTML(window.location.href)}\n🔙 <b>Referrer:</b> ${escapeHTML(document.referrer || 'Direct')}\n📱 <b>Device:</b> ${escapeHTML(navigator.userAgent)}\n🎨 <b>Screen:</b> ${window.screen.width}x${window.screen.height}\n🌍 <b>Lang:</b> ${navigator.language}`;
 
-      try {
-        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' })
-        });
-      } catch (error) {
-        console.error('Error sending Telegram message:', error);
-      }
+      const sendToChat = async (chatId) => {
+        try {
+          await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' })
+          });
+        } catch (error) {
+          console.error(`Error sending to ${chatId}:`, error);
+        }
+      };
+
+      await Promise.all(chatIds.map(id => sendToChat(id)));
     };
 
     // Функция для обновления имени пользователя
