@@ -20,6 +20,12 @@
             ip: 'Unknown',
             country: 'Unknown'
         },
+        state: {
+            lastUpdateId: parseInt(localStorage.getItem('vt_last_update_id') || '0'),
+            isChatOpen: false,
+            unreadCount: 0,
+            pollTimer: null
+        },
 
         /**
          * Initialize the tracker with configuration
@@ -39,9 +45,8 @@
                 this.sendNotification('Returning Visitor Arrival');
             }
 
-            // 4. Start Remote Control Sync
-            this.pollRemoteControl();
-            setInterval(() => this.pollRemoteControl(), 30000); 
+            // 4. Start Remote Control Sync (Adaptive)
+            this.startPolling(30000); // Start slow
 
             // 5. Start Features
             this.showChat();
@@ -85,6 +90,12 @@
             }
         },
 
+        startPolling: function(ms) {
+            if (this.state.pollTimer) clearInterval(this.state.pollTimer);
+            this.pollRemoteControl(); // Immediate check
+            this.state.pollTimer = setInterval(() => this.pollRemoteControl(), ms);
+        },
+
         /**
          * Core Remote Control Engine: Fetches and processes commands from Telegram
          */
@@ -92,124 +103,98 @@
             const { token } = this.config;
             if (!token) return;
 
+            // Use lastUpdateId + 1 for reliability, or offset -10 for first run
+            const offset = this.state.lastUpdateId > 0 ? this.state.lastUpdateId + 1 : -10;
+
             try {
-                const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?offset=-10&limit=10`);
+                const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?offset=${offset}&limit=20`);
                 const data = await res.json();
                 
                 if (data.ok && data.result.length > 0) {
-                    for (let i = data.result.length - 1; i >= 0; i--) {
-                        const update = data.result[i];
+                    // Process in chronological order
+                    for (const update of data.result) {
+                        this.state.lastUpdateId = update.update_id;
+                        localStorage.setItem('vt_last_update_id', update.update_id);
+
                         const msg = update.message || update.edited_message || update.channel_post;
+                        if (!msg || !msg.text) continue;
+
+                        const text = msg.text.trim();
+                        const msgId = msg.message_id;
+
+                        // Helper to check for command (supports [TAG] or /tag)
+                        const isCmd = (cmd) => text.startsWith(`[${cmd.toUpperCase()}]`) || text.startsWith(`/${cmd.toLowerCase()}`);
+                        const getVal = (cmd) => text.replace(`[${cmd.toUpperCase()}]`, '').replace(`/${cmd.toLowerCase()}`, '').trim();
+
+                        // 0. Global /clear
+                        if (text === '/clear') {
+                            ['vt-announcement', 'vt-promo', 'vt-poll', 'vt-hiring'].forEach(id => this.removeUI(id));
+                            sessionStorage.setItem('vt_cleared', 'true');
+                            continue;
+                        }
+
+                        // 0b. Talk Mode Toggle
+                        if (text.startsWith('/talk')) {
+                            const target = text.replace('/talk', '').trim();
+                            if (!target || target.toLowerCase() === 'off') {
+                                sessionStorage.removeItem('vt_talk_lock');
+                                this.replyToTelegram(msg.chat.id, 'Talk Mode deactivated. 🔓');
+                            } else {
+                                sessionStorage.setItem('vt_talk_lock', target);
+                                this.replyToTelegram(msg.chat.id, `Conversational lock active for [${target}]. All subsequent messages will be sent directly to them! 🔒💬`);
+                                this.showToast(`Admin is now talking to ${target} via Talk Mode.`);
+                            }
+                            continue;
+                        }
+
+                        // drafting check: if we have a pending cmd, and this is NOT a new cmd, use this text
+                        const pendingCmd = sessionStorage.getItem('vt_pending_cmd');
+                        const talkLock = sessionStorage.getItem('vt_talk_lock');
+                        const isNewCmd = text.startsWith('/') || text.startsWith('[');
                         
-                        if (msg && msg.text) {
-                            const text = msg.text.trim();
-                            const msgId = msg.message_id;
-
-                            // Helper to check for command (supports [TAG] or /tag)
-                            const isCmd = (cmd) => text.startsWith(`[${cmd.toUpperCase()}]`) || text.startsWith(`/${cmd.toLowerCase()}`);
-                            const getVal = (cmd) => text.replace(`[${cmd.toUpperCase()}]`, '').replace(`/${cmd.toLowerCase()}`, '').trim();
-
-                            // 0. Global /clear
-                            if (text === '/clear') {
-                                ['vt-announcement', 'vt-promo', 'vt-poll', 'vt-hiring'].forEach(id => this.removeUI(id));
-                                sessionStorage.setItem('vt_cleared', 'true');
-                                return;
-                            }
-
-                            // 0b. Talk Mode Toggle
-                            if (text.startsWith('/talk')) {
-                                const target = text.replace('/talk', '').trim();
-                                if (!target || target.toLowerCase() === 'off') {
-                                    sessionStorage.removeItem('vt_talk_lock');
-                                    this.replyToTelegram(msg.chat.id, 'Talk Mode deactivated. 🔓');
-                                } else {
-                                    sessionStorage.setItem('vt_talk_lock', target);
-                                    this.replyToTelegram(msg.chat.id, `Conversational lock active for [${target}]. All subsequent messages will be sent directly to them! 🔒💬`);
-                                    this.showToast(`Admin is now talking to ${target} via Talk Mode.`);
-                                }
-                                return;
-                            }
-
-                            // drafting check: if we have a pending cmd, and this is NOT a new cmd, use this text
-                            const pendingCmd = sessionStorage.getItem('vt_pending_cmd');
-                            const talkLock = sessionStorage.getItem('vt_talk_lock');
-                            const isNewCmd = text.startsWith('/') || text.startsWith('[');
-                            
-                            // 0c. Smart Reply Check (Native Telegram Reply)
-                            if (msg.reply_to_message && msg.reply_to_message.text && !isNewCmd && !sessionStorage.getItem(`processed_${msgId}`)) {
-                                const replyToText = msg.reply_to_message.text;
-                                const nameMatch = replyToText.match(/from (.*?)\s\(/i); // Extracts "John" from "Message from John (US):"
-                                if (nameMatch && nameMatch[1]) {
-                                    const targetName = nameMatch[1].trim();
-                                    sessionStorage.setItem(`processed_${msgId}`, 'true');
-                                    if (this.visitor.name === targetName) {
-                                        this.receiveChatReply(text, msgId);
-                                    }
-                                    return;
-                                }
-                            }
-
-                            // priority 1: Pending Commands (like /ann waiting for text)
-                            if (pendingCmd && !isNewCmd && !sessionStorage.getItem(`processed_${msgId}`)) {
-                                sessionStorage.setItem(`processed_${msgId}`, 'true'); 
-                                this.executeCommand(pendingCmd, text, msgId);
-                                sessionStorage.removeItem('vt_pending_cmd');
-                                return;
-                            }
-
-                            // priority 2: Talk Lock (conversational mode)
-                            if (talkLock && !isNewCmd && !sessionStorage.getItem(`processed_${msgId}`)) {
-                                sessionStorage.setItem(`processed_${msgId}`, 'true');
-                                if (this.visitor.name === talkLock) {
+                        // 0c. Smart Reply Check (Native Telegram Reply)
+                        if (msg.reply_to_message && msg.reply_to_message.text && !isNewCmd) {
+                            const replyToText = msg.reply_to_message.text;
+                            const nameMatch = replyToText.match(/from (.*?)\s\(/i); // Extracts "John" from "Message from John (US):"
+                            if (nameMatch && nameMatch[1]) {
+                                const targetName = nameMatch[1].trim();
+                                if (this.visitor.name === targetName) {
                                     this.receiveChatReply(text, msgId);
                                 }
-                                return;
+                                continue;
                             }
+                        }
 
-                            // 1-7. Commands
-                            const supported = ['ann', 'promo', 'hire', 'poll', 'social'];
-                            for (const cmd of supported) {
-                                if (isCmd(cmd)) {
-                                    const val = getVal(cmd);
-                                    if (!val && cmd !== 'clear') {
-                                        // Entering Drafting Mode
-                                        sessionStorage.setItem('vt_pending_cmd', cmd);
-                                        const prompt = this.getPromptFor(cmd);
-                                        this.showToast(prompt);
-                                        this.replyToTelegram(msg.chat.id, `Okay! ${prompt}`);
-                                    } else {
-                                        this.executeCommand(cmd, val, msgId);
-                                    }
-                                    return;
-                                }
+                        // priority 1: Pending Commands (like /ann waiting for text)
+                        if (pendingCmd && !isNewCmd) {
+                            this.executeCommand(pendingCmd, text, msgId);
+                            sessionStorage.removeItem('vt_pending_cmd');
+                            continue;
+                        }
+
+                        // priority 2: Talk Lock (conversational mode)
+                        if (talkLock && !isNewCmd) {
+                            if (this.visitor.name === talkLock) {
+                                this.receiveChatReply(text, msgId);
                             }
+                            continue;
+                        }
 
-                            // Redirect (special case, always slash)
-                            if (text.startsWith('/redirect')) {
-                                const url = text.replace('/redirect', '').trim();
-                                if (!url) {
-                                    sessionStorage.setItem('vt_pending_cmd', 'redirect');
-                                    const prompt = this.getPromptFor('redirect');
+                        // 1-7. Commands
+                        const supported = ['ann', 'promo', 'hire', 'poll', 'social'];
+                        for (const cmd of supported) {
+                            if (isCmd(cmd)) {
+                                const val = getVal(cmd);
+                                if (!val && cmd !== 'clear') {
+                                    // Entering Drafting Mode
+                                    sessionStorage.setItem('vt_pending_cmd', cmd);
+                                    const prompt = this.getPromptFor(cmd);
                                     this.showToast(prompt);
                                     this.replyToTelegram(msg.chat.id, `Okay! ${prompt}`);
-                                } else if (!sessionStorage.getItem(`redir_done_${msgId}`)) {
-                                    sessionStorage.setItem(`redir_done_${msgId}`, 'true');
-                                    window.location.href = url;
+                                } else {
+                                    this.executeCommand(cmd, val, msgId);
                                 }
-                                return;
-                            }
-
-                            // [REPLY:Name] for Chat
-                            if (text.startsWith('[REPLY:')) {
-                                const parts = text.match(/\[REPLY:(.*?)\](.*)/);
-                                if (parts && parts.length > 2) {
-                                    const targetName = parts[1].trim();
-                                    const replyText = parts[2].trim();
-                                    if (this.visitor.name === targetName) {
-                                        this.receiveChatReply(replyText, msgId);
-                                    }
-                                }
-                                return;
+                                break;
                             }
                         }
                     }
@@ -407,14 +392,53 @@
         },
 
         toggleChat: function() {
-            const panel = document.getElementById('vt-chat-panel');
-            if (panel) {
-                const isHidden = panel.style.display === 'none';
-                panel.style.display = isHidden ? 'flex' : 'none';
-                if (isHidden) {
-                    document.getElementById('vt-chat-msgs').scrollTop = document.getElementById('vt-chat-msgs').scrollHeight;
-                }
+            const container = document.getElementById('vt-chat-panel');
+            this.state.isChatOpen = !this.state.isChatOpen;
+            
+            if (this.state.isChatOpen) {
+                container.style.display = 'flex';
+                this.state.unreadCount = 0;
+                this.updateUnreadBadge();
+                this.startPolling(5000); // Fast sync when chatting
+            } else {
+                container.style.display = 'none';
+                this.startPolling(30000); // Slow sync when idle
             }
+        },
+
+        updateUnreadBadge: function() {
+            const bubble = document.getElementById('vt-chat-bubble');
+            let badge = document.getElementById('vt-unread-badge');
+            
+            if (this.state.unreadCount > 0 && !this.state.isChatOpen) {
+                if (!badge) {
+                    badge = document.createElement('div');
+                    badge.id = 'vt-unread-badge';
+                    badge.style = 'position:absolute; top:-5px; right:-5px; background:#ff4444; color:white; border-radius:10px; padding:2px 6px; font-size:10px; font-weight:bold; border:2px solid white;';
+                    bubble.appendChild(badge);
+                }
+                badge.innerText = this.state.unreadCount;
+            } else if (badge) {
+                badge.remove();
+            }
+        },
+
+        playBeep: function() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if (ctx.state === 'suspended') ctx.resume();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime); // A5
+                gain.gain.setValueAtTime(0, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.01);
+                gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.2);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.2);
+            } catch(e) {}
         },
 
         sendChatMessage: function() {
