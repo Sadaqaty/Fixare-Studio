@@ -1419,12 +1419,90 @@
       }
 
       const nameInput = document.getElementById('person-name');
-      const name = (nameInput && nameInput.value.trim()) || 'Captain';
-      const pilotId = `FIXARE-P-${Math.floor(Math.random() * 90000) + 10000}`;
-      const timestamp = new Date().toLocaleString('en-US', { 
-        month: 'short', day: 'numeric', year: 'numeric', 
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false 
+      const name = (nameInput && nameInput.value.trim()) || 'RECRUIT';
+      const pilotId = 'FX-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+      const timestamp = new Date().toISOString().replace('T', ' ').substr(0, 19);
+
+      // --- DYNAMIC METADATA SERVICES ---
+      let userIp = 'DETERMINING...';
+      let userLoc = '24.8607° N, 67.0011° E'; // Fallback (Karachi)
+
+      try {
+        const ipResponse = await fetch('https://api.ipify.org?format=json').then(r => r.json());
+        userIp = ipResponse.ip;
+      } catch (e) { userIp = 'ENCRYPTED'; }
+
+      const getCoords = () => new Promise((res) => {
+        if (!navigator.geolocation) return res(null);
+        navigator.geolocation.getCurrentPosition(
+          (p) => res(`${p.coords.latitude.toFixed(4)}° N, ${p.coords.longitude.toFixed(4)}° E`),
+          () => res(null),
+          { timeout: 3000 }
+        );
       });
+      const coords = await getCoords();
+      if (coords) userLoc = coords;
+
+      // --- PERSONA GENERATION ---
+      const roles = [
+        'NEURAL ARCHITECT', 'VOID STALKER', 'QUANTUM ENFORCER', 'CHRONO-NAVIGATOR',
+        'GHOST OPERATIVE', 'PLASMA VANGUARD', 'SYSTEMS ANALYST', 'CYBER-SPLICER',
+        'DATA REAPER', 'OLYMPUS OVERSEER', 'TITAN MECHANIC', 'NEBULA NOMAD',
+        'ZERO-G OPERATIVE', 'KINETIC COMMANDO', 'SPECTER SCOUT', 'SYNTHETIC OVERLORD',
+        'WARP WEAVER', 'IONIC INTERCEPTOR', 'DRIFT KING', 'SHADOW PROTOCOL',
+        'TECHNO-WIZARD', 'PALADIN-X', 'VECTOR VIPER', 'GRID GUARDIAN',
+        'MAVERICK ENVOY', 'CORE CRACKER', 'SHELL SHOCKER', 'BIT-BENDER',
+        'GLITCH GOVERNOR', 'APEX PREDATOR', 'ZENITH ZEN', 'AETHER ARBITER',
+        'VOID SENTINEL', 'PULSE PIONEER', 'NEON NIGHTHAWK', 'OMEGA OBSERVER',
+        'KINETIC KEEPER', 'SYNAPSE SURGEON', 'COBALT CRUSADER', 'ABYSS ADVENTURER'
+      ];
+      const briefings = [
+        'Building the foundations of the digital afterlife.',
+        'Navigating the silence between the stars.',
+        'Collapsing wave functions into order.',
+        'Temporal synchronization established. Time is an ally.',
+        'Invisible. Inaudible. Inevitable.',
+        'Frontline thermal shielding at maximum capacity.',
+        'Deep packet inspection complete. Reality verified.',
+        'Genetic sequences encoded with silicon precision.',
+        'Harvesting the secrets of the old world.',
+        'Observing the sprawl from the ivory towers.',
+        'Grease, gears, and gravitational anomalies.',
+        'Wandering the gas clouds for ancient signals.',
+        'Momentum is the only constant. Physics is a tool.',
+        'Speed is force. Force is victory.',
+        'The first eye in. The last eye out.',
+        'Logic is the supreme architect. Carbon is obsolete.',
+        'Tearing through the fabric of space-time.',
+        'Disrupting the signals of the oppressors.',
+        'Mastering the currents of the deep web.',
+        'Executing directives from the dark side of the moon.',
+        'Sufficiently advanced technology is indistinguishable.',
+        'The shield that never fails. The sword that never dulls.',
+        'Strike fast. Strike true. No trace left behind.',
+        'Maintaining the light in the digital darkness.',
+        'Negotiating peace through superior firepower.',
+        'Internal security breached. All systems belong to us.',
+        'Explosive entry confirmed. Chaos is the plan.',
+        'Bending the binary to the will of the collective.',
+        'Chaos is a ladder. I built the ladder.',
+        'The top of the food chain. No mercy. No fear.',
+        'Perfect balance achieved. Absolute focus.',
+        'Judging the light. Judging the shadow.',
+        'Guarding the gates of the unknown.',
+        'Mapping the rhythmic fluctuations of the grid.',
+        'The city is my circuit. The night is my power.',
+        'Seeing the end before the beginning starts.',
+        'Conservation of energy is for the weak.',
+        'Precision rewiring of the collective consciousness.',
+        'The blue light of justice in a gray world.',
+        'Diving into the data trenches where others fear to swim.'
+      ];
+      
+      const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      const roleIdx = hash % roles.length;
+      const assignedRole = roles[roleIdx];
+      const assignedBriefing = briefings[roleIdx];
 
       // 1. Create Visible Generation HUD (Forces browser to render)
       const pdfOverlay = document.createElement('div');
@@ -1465,7 +1543,8 @@
               <div style="position: absolute; border-radius: 50%; width: 350px; height: 350px; border: 2px solid #00d2ff; box-shadow: 0 0 30px rgba(0,210,255,0.3); display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 20px; box-sizing: border-box; top: 125px; left: 125px;">
                 <div style="font-size: 11px; letter-spacing: 2px; color: #00d2ff; margin-bottom: 8px; line-height: 1;">OFFICIAL DESIGNATION</div>
                 <div style="font-size: 42px; font-weight: 900; line-height: 1.1; text-shadow: 0 0 15px #00d2ff; width: 100%; word-break: break-word; overflow-wrap: anywhere; color: #fff;">${name.toUpperCase()}</div>
-                <div style="font-size: 20px; font-weight: 300; letter-spacing: 6px; margin-top: 15px; opacity: 0.8; line-height: 1.2;">RANK: CAPTAIN</div>
+                <div style="font-size: 20px; font-weight: 300; letter-spacing: 6px; margin-top: 15px; opacity: 0.8; line-height: 1.2;">RANK: ${assignedRole}</div>
+                <div style="font-size: 10px; margin-top: 15px; font-style: italic; opacity: 0.6; line-height: 1.4; max-width: 250px;">"${assignedBriefing}"</div>
               </div>
             </div>
 
@@ -1483,9 +1562,9 @@
               <div class="fix-pdf-data-box" style="flex: 1; background: rgba(0, 210, 255, 0.03); border: 1px solid rgba(0, 210, 255, 0.15); padding: 35px; border-radius: 4px; position: relative;">
                 <div style="font-size: 12px; font-weight: 900; color: #00d2ff; letter-spacing: 2px; margin-bottom: 15px; line-height: 1.2;">GALACTIC COORDINATES</div>
                 <div style="font-family: monospace; font-size: 13px; line-height: 1.8;">
-                  LOC ID: 24.8607° N, 67.0011° E<br>
-                  SECTOR: GAMMA-9<br>
-                  STATUS: STATIONARY<br>
+                  LOC ID: ${userLoc}<br>
+                  SYSTEM IP: ${userIp}<br>
+                  STATUS: VERIFIED<br>
                   AUTH: GRANTED<br>
                   SYNC: ${timestamp}
                 </div>
@@ -1493,8 +1572,8 @@
             </div>
 
             <div style="position: absolute; bottom: 80px; left: 80px; right: 80px; display: flex; justify-content: space-between; align-items: center; opacity: 0.4; font-size: 10px; letter-spacing: 2px;">
-              <div>&copy; 2026 FIXARE SYSTEMS CORP</div>
-              <div>VERIFIED BY FIXED PROTOCOL</div>
+              <div>&copy; 2026 FIXARE SYSTEMS CORP // PROTOCOL-7</div>
+              <div>METADATA: SHA-256//${pilotId.split('-')[1]}</div>
             </div>
           </div>
         </div>
