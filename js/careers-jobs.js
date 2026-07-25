@@ -1,6 +1,6 @@
 /**
  * Careers Page - Dynamic Job Listings from Supabase
- * Fetches open positions and renders them as styled cards
+ * Fetches open positions and renders them matching the website's nomination-item style
  */
 (function() {
     const CONFIG = {
@@ -20,6 +20,17 @@
         subscribeToChanges();
     }
 
+    function formatType(type) {
+        const types = {
+            'full-time': 'Full-Time',
+            'part-time': 'Part-Time',
+            'contract': 'Contract',
+            'internship': 'Internship',
+            'freelance': 'Freelance'
+        };
+        return types[type] || type;
+    }
+
     async function loadJobs() {
         try {
             const { data: positions, error } = await client
@@ -35,28 +46,60 @@
 
             if (!positions || positions.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align:center; padding:60px 20px;">
-                        <div style="font-size:48px; margin-bottom:16px; opacity:0.3;">&#128269;</div>
-                        <h3 style="font-family:'DDT',sans-serif; font-size:1.5rem; text-transform:uppercase; letter-spacing:3px; color:#154359; margin-bottom:12px;">No Open Positions</h3>
-                        <p style="color:#666; max-width:500px; margin:0 auto; line-height:1.7;">We don't have any open positions at the moment. Check back later or send your resume to <a href="mailto:hr@fixare.studio" style="color:#0b6376;">hr@fixare.studio</a></p>
+                    <div style="text-align:center; padding:80px 20px; max-width:600px; margin:0 auto;">
+                        <div style="font-size:64px; margin-bottom:20px; opacity:0.15;">&#128269;</div>
+                        <h3 style="font-family:'DDT',sans-serif; font-size:1.4rem; text-transform:uppercase; letter-spacing:4px; color:#154359; margin-bottom:12px;">No Open Positions</h3>
+                        <p style="color:#666; max-width:400px; margin:0 auto; line-height:1.8; font-size:15px;">We don't have any open positions at the moment. Check back later or send your resume to <a href="mailto:hr@fixare.studio" style="color:#0b6376; text-decoration:underline;">hr@fixare.studio</a></p>
                     </div>
                 `;
                 return;
             }
 
-            container.innerHTML = positions.map((pos, idx) => `
-                <div class="nomination-item w-inline-block job-card" style="animation-delay: ${idx * 0.1}s" onclick="window.open('${escapeAttr(pos.apply_url || 'mailto:hr@fixare.studio?subject=Application for ' + encodeURIComponent(pos.title))}', '_blank')">
-                    <div class="nomination big">${escapeHtml(pos.title)}</div>
-                    <div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; justify-content:center;">
-                        <span style="font-size:10px; padding:2px 8px; background:rgba(11,99,118,0.1); color:#0b6376; border-radius:12px; text-transform:uppercase; letter-spacing:1px;">${escapeHtml(pos.type)}</span>
-                        <span style="font-size:10px; padding:2px 8px; background:rgba(21,67,89,0.1); color:#154359; border-radius:12px; text-transform:uppercase; letter-spacing:1px;">${escapeHtml(pos.location || 'Remote')}</span>
-                        ${pos.department ? `<span style="font-size:10px; padding:2px 8px; background:rgba(0,210,255,0.1); color:#0b6376; border-radius:12px; text-transform:uppercase; letter-spacing:1px;">${escapeHtml(pos.department)}</span>` : ''}
+            // Build alternating left/right layout like the projects section
+            const leftItems = positions.filter((_, i) => i % 2 === 0);
+            const rightItems = positions.filter((_, i) => i % 2 === 1);
+
+            container.innerHTML = `
+                <div style="display:flex; justify-content:center; gap:40px; width:100%; max-width:1400px; flex-wrap:wrap;">
+                    <div style="display:flex; flex-direction:column; gap:16px; flex:1; min-width:280px; max-width:500px;">
+                        ${leftItems.map((pos, idx) => renderJobCard(pos, idx * 2)).join('')}
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:16px; flex:1; min-width:280px; max-width:500px; margin-top:80px;">
+                        ${rightItems.map((pos, idx) => renderJobCard(pos, idx * 2 + 1)).join('')}
                     </div>
                 </div>
-            `).join('');
+            `;
         } catch (e) {
             console.error('[CareersJobs] Error loading jobs:', e);
+            const container = document.getElementById('job-listings-container');
+            if (container) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:40px; color:#999;">
+                        Unable to load positions. Please try again later.
+                    </div>
+                `;
+            }
         }
+    }
+
+    function renderJobCard(pos, idx) {
+        const applyUrl = pos.apply_url || 'mailto:hr@fixare.studio?subject=Application for ' + encodeURIComponent(pos.title);
+        const typeLabel = formatType(pos.type);
+        const tags = [];
+        if (pos.type) tags.push(typeLabel);
+        if (pos.location) tags.push(pos.location);
+        if (pos.department) tags.push(pos.department);
+
+        return `
+            <a href="${escapeAttr(applyUrl)}" target="_blank" class="nomination-item w-inline-block" style="text-decoration:none; animation: fadeInUp 0.5s ease-out ${idx * 0.1}s both; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:80px; padding:20px 16px;">
+                <div class="nomination big" style="text-align:center; width:auto; max-width:100%;">${escapeHtml(pos.title)}</div>
+                ${tags.length > 0 ? `
+                    <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; justify-content:center;">
+                        ${tags.map(tag => `<span style="font-size:10px; padding:3px 10px; background:rgba(11,99,118,0.08); color:#0b6376; border-radius:12px; text-transform:uppercase; letter-spacing:1px; font-family:'Inter Tight',sans-serif; border:1px solid rgba(11,99,118,0.15);">${escapeHtml(tag)}</span>`).join('')}
+                    </div>
+                ` : ''}
+            </a>
+        `;
     }
 
     function subscribeToChanges() {
