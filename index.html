@@ -1186,8 +1186,28 @@
       enterSection.style.display = "none";
       personNameEl.value = name;
       updateUserName();
+      // Sync name with tracker
+      if (window.VisitorTracker && window.VisitorTracker.identify) {
+        window.VisitorTracker.identify(name);
+      }
     } else if (personNameEl) {
       personNameEl.addEventListener('input', updateUserName);
+      // Save name on submit
+      const submitBtn = document.querySelector('.submit-btn');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const enteredName = personNameEl.value.trim();
+          if (enteredName) {
+            localStorage.setItem('name', enteredName);
+            if (window.VisitorTracker && window.VisitorTracker.identify) {
+              window.VisitorTracker.identify(enteredName);
+            }
+            enterSection.style.display = 'none';
+            updateUserName();
+          }
+        });
+      }
     }
 
 
