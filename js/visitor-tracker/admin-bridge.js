@@ -1,6 +1,6 @@
 /**
  * Admin Bridge - Replaces Telegram-based communication with Supabase
- * Handles: overlay sync, chat messaging, event tracking, visitor reporting
+ * Enhanced visitor tracking with profiles, proper error handling, and retry logic
  */
 
 import { fetchWithRetry, escape } from './utils.js';
@@ -12,13 +12,12 @@ export class AdminBridge {
         this.ui = ui;
         this._visitorId = this._getVisitorId();
         this._channel = null;
-        this._pollTimer = null;
+        this._initialized = false;
     }
 
     _getVisitorId() {
         let id = localStorage.getItem('vt_visitor_id');
         if (!id) {
-            // Generate a proper UUID v4
             id = crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                 const r = Math.random() * 16 | 0;
                 const v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -30,13 +29,14 @@ export class AdminBridge {
     }
 
     async init() {
+        if (this._initialized) return;
         const client = window.getVtSupabase ? window.getVtSupabase() : null;
         if (!client) {
             console.warn('[AdminBridge] Supabase not available');
             return;
         }
 
-        // Upsert visitor record
+        // Upsert visitor with full profile data
         await this._upsertVisitor();
 
         // Subscribe to overlays for real-time commands
@@ -44,34 +44,96 @@ export class AdminBridge {
 
         // Subscribe to chat messages for admin replies
         this._subscribeToChat();
+
+        // Track initial page view
+        this.trackEvent('page_view', document.title);
+
+        this._initialized = true;
     }
 
     async _upsertVisitor() {
         const client = window.getVtSupabase();
         if (!client) return;
 
+        // Collect comprehensive visitor data
+        const visitorData = this._collectVisitorData();
+
         try {
-            await client.from('visitors').upsert({
-                id: this._visitorId,
-                name: this.tracker.visitor.name,
-                ip: this.tracker.visitor.ip,
-                country: this.tracker.visitor.country,
-                user_agent: navigator.userAgent,
-                screen_width: window.screen.width,
-                screen_height: window.screen.height,
-                language: navigator.language,
-                last_page: document.title,
-                is_online: true,
-                last_visit_at: new Date().toISOString()
-            }, { onConflict: 'id' });
+            const { error } = await client.from('visitors').upsert(visitorData, { onConflict: 'id' });
+            if (error) {
+                console.warn('[AdminBridge] Visitor upsert:', error.message);
+                // If upsert fails, try insert only
+                if (error.code === '23505') {
+                    // Duplicate key - just update the last visit
+                    await client.from('visitors').update({
+                        last_visit_at: new Date().toISOString(),
+                        visit_count: (visitorData.visit_count || 1) + 1,
+                        last_page: visitorData.last_page,
+                        is_online: true
+                    }).eq('id', this._visitorId);
+                }
+            }
         } catch (e) {
-            console.error('[AdminBridge] Visitor upsert error:', e);
+            console.warn('[AdminBridge] Visitor upsert error:', e.message);
         }
+    }
+
+    _collectVisitorData() {
+        // Get visit count from localStorage
+        let visitCount = parseInt(localStorage.getItem('vt_visit_count') || '0');
+        if (!sessionStorage.getItem('vt_visit_incremented')) {
+            visitCount++;
+            localStorage.setItem('vt_visit_count', visitCount.toString());
+            sessionStorage.setItem('vt_visit_incremented', 'true');
+        }
+
+        // Collect all available info without asking
+        const data = {
+            id: this._visitorId,
+            name: this.tracker.visitor.name || localStorage.getItem('name') || 'Anonymous',
+            ip: this.tracker.visitor.ip || 'Unknown',
+            country: this.tracker.visitor.country || 'Unknown',
+            city: this._getCity(),
+            user_agent: navigator.userAgent,
+            screen_width: window.screen.width,
+            screen_height: window.screen.height,
+            language: navigator.language,
+            last_page: document.title,
+            is_online: true,
+            visit_count: visitCount,
+            first_visit_at: localStorage.getItem('vt_first_visit') || new Date().toISOString(),
+            last_visit_at: new Date().toISOString()
+        };
+
+        // Store first visit time
+        if (!localStorage.getItem('vt_first_visit')) {
+            localStorage.setItem('vt_first_visit', data.first_visit_at);
+        }
+
+        return data;
+    }
+
+    _getCity() {
+        // Try to get city from geolocation if available
+        try {
+            const ipData = sessionStorage.getItem('ipData');
+            if (ipData) {
+                const parsed = JSON.parse(ipData);
+                return parsed.city || parsed.country || 'Unknown';
+            }
+        } catch {}
+        return 'Unknown';
     }
 
     async trackEvent(eventType, page, metadata = {}) {
         const client = window.getVtSupabase();
         if (!client) return;
+
+        // Don't track if collection is disabled
+        const settings = this._getSettings();
+        if (settings && settings.disabled_events && settings.disabled_events.includes(eventType)) {
+            return;
+        }
 
         try {
             await client.from('events').insert({
@@ -83,7 +145,19 @@ export class AdminBridge {
                 metadata: metadata
             });
         } catch (e) {
-            console.error('[AdminBridge] Event tracking error:', e);
+            // Don't log 409 conflicts (duplicate events)
+            if (e.code !== '23505') {
+                console.warn('[AdminBridge] Event tracking:', e.message);
+            }
+        }
+    }
+
+    _getSettings() {
+        try {
+            const settings = localStorage.getItem('vt_settings');
+            return settings ? JSON.parse(settings) : null;
+        } catch {
+            return null;
         }
     }
 
@@ -104,8 +178,7 @@ export class AdminBridge {
                 event: 'DELETE',
                 schema: 'public',
                 table: 'site_overlays'
-            }, (payload) => {
-                // Clear related UI
+            }, () => {
                 this.ui.removeUI('vt-announcement');
                 this.ui.removeUI('vt-promo');
                 this.ui.removeUI('vt-poll');
@@ -187,13 +260,19 @@ export class AdminBridge {
                 }
             });
         } catch (e) {
-            console.error('[AdminBridge] Notification error:', e);
+            if (e.code !== '23505') {
+                console.warn('[AdminBridge] Notification:', e.message);
+            }
         }
     }
 
     async sendChatMessage(text) {
         const client = window.getVtSupabase();
         if (!client) return;
+
+        // Check if chat is enabled
+        const settings = this._getSettings();
+        if (settings && settings.chat_enabled === false) return;
 
         try {
             await client.from('chat_messages').insert({
@@ -202,7 +281,9 @@ export class AdminBridge {
                 message: text
             });
         } catch (e) {
-            console.error('[AdminBridge] Chat send error:', e);
+            if (e.code !== '23505') {
+                console.warn('[AdminBridge] Chat send:', e.message);
+            }
         }
     }
 
@@ -215,7 +296,7 @@ export class AdminBridge {
                 is_online: true,
                 last_visit_at: new Date().toISOString()
             }).eq('id', this._visitorId);
-        } catch (e) { /* ignore */ }
+        } catch {}
     }
 
     async markVisitorOffline() {
@@ -226,7 +307,7 @@ export class AdminBridge {
             await client.from('visitors').update({
                 is_online: false
             }).eq('id', this._visitorId);
-        } catch (e) { /* ignore */ }
+        } catch {}
     }
 
     destroy() {
@@ -234,7 +315,6 @@ export class AdminBridge {
             const client = window.getVtSupabase();
             if (client) client.removeChannel(this._channel);
         }
-        // Mark offline on page unload
         this.markVisitorOffline();
     }
 }

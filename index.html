@@ -1193,74 +1193,16 @@
 
 
     gsap.set(".nav-items", { y: '-4em' })
-    gsap.set(".btns-top-wrapper", { opacity: 0 })
-    gsap.set(".tg-chat-cta", { autoAlpha: 0 })
+    if (document.querySelector(".btns-top-wrapper")) gsap.set(".btns-top-wrapper", { opacity: 0 })
+    if (document.querySelector(".tg-chat-cta")) gsap.set(".tg-chat-cta", { autoAlpha: 0 })
 
-    //Dublicate animation when Enter screen was scipped
     document.addEventListener('DOMContentLoaded', function () {
-      const enterSection = document.getElementById('enterSection');
-
-      // Check if #enterSection is set to display: none
-      if (window.getComputedStyle(enterSection).getPropertyValue('display') === 'none') {
-        // If #enterSection is hidden
-        setTimeout(function () {
-          gsap.fromTo(".hero-image-1", { x: '0em' }, { x: '0em', delay: 4, duration: 1.5, ease: "power3.out" });
-          gsap.fromTo(".hero-image-2", { x: '-3em' }, { x: '0em', delay: 4, duration: 1.5, ease: "power3.out" });
-          gsap.to(".nav-items", { y: 0, delay: 4, duration: 0.6, ease: "power1.out" })
-          gsap.to(".btns-top-wrapper", { opacity: 1, delay: 4, duration: 0.3 })
-          gsap.to(".tg-chat-cta", { autoAlpha: 1 })
-        }, 0);
-      }
-
-      // If click on Skip  
-      document.querySelector('.skip-wrapper').addEventListener('click', function () {
-        VisitorTracker.trackAction('Anonymous Visitor (Skipped)');
-        gsap.fromTo(".hero-image-1", { x: '0em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
-        gsap.fromTo(".hero-image-2", { x: '-3em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
-        gsap.fromTo(".hero-subtitle.hero-1", { y: '2em' }, { y: 0, duration: 0.6, ease: "power1.out" }, "<")
-        gsap.fromTo(".fixare-text", { y: '100%' }, { y: 0, delay: 0.05, duration: 0.6, ease: "power1.out" }, "<")
-        gsap.fromTo(".awards-text", { y: '100%' }, { y: 0, delay: 0.1, duration: 0.6, ease: "power1.out" }, "<")
-        gsap.fromTo(".hero-subtitle.hero-2", { y: '3em' }, { y: 0, delay: 0.15, duration: 0.6, ease: "power1.out" }, "<")
-        gsap.to(".nav-items", { y: 0, delay: 0.1, duration: 0.6, ease: "power1.out" }, "<")
-        gsap.to(".btns-top-wrapper", { opacity: 1, delay: 0.1, duration: 0.3, ease: "power1.out" }, "<")
-        gsap.to(".tg-chat-cta", { autoAlpha: 1 }, "<")
-      });
-
+      gsap.fromTo(".hero-image-1", { x: '0em' }, { x: '0em', delay: 4, duration: 1.5, ease: "power3.out" });
+      gsap.fromTo(".hero-image-2", { x: '-3em' }, { x: '0em', delay: 4, duration: 1.5, ease: "power3.out" });
+      gsap.to(".nav-items", { y: 0, delay: 4, duration: 0.6, ease: "power1.out" })
+      if (document.querySelector(".btns-top-wrapper")) gsap.to(".btns-top-wrapper", { opacity: 1, delay: 4, duration: 0.3 })
+      if (document.querySelector(".tg-chat-cta")) gsap.to(".tg-chat-cta", { autoAlpha: 1 })
     });
-
-    // If click on Start Journey 
-    document.querySelector('.submit-btn').addEventListener('click', function () {
-      const name = document.getElementById('person-name').value;
-      if (name) {
-        VisitorTracker.identify(name);
-      }
-
-      gsap.fromTo(".hero-image-1", { x: '0em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
-      gsap.fromTo(".hero-image-2", { x: '-3em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
-      gsap.fromTo(".hero-subtitle.hero-1", { y: '2em' }, { y: 0, duration: 0.6, ease: "power1.out" }, "<")
-      gsap.fromTo(".fixare-text", { y: '100%' }, { y: 0, delay: 0.05, duration: 0.6, ease: "power1.out" }, "<")
-      gsap.fromTo(".awards-text", { y: '100%' }, { y: 0, delay: 0.1, duration: 0.6, ease: "power1.out" }, "<")
-      gsap.fromTo(".hero-subtitle.hero-2", { y: '3em' }, { y: 0, delay: 0.15, duration: 0.6, ease: "power1.out" }, "<")
-      gsap.to(".nav-items", { y: 0, delay: 0.1, duration: 0.6, ease: "power1.out" }, "<")
-      gsap.to(".btns-top-wrapper", { opacity: 1, delay: 0.1, duration: 0.3, ease: "power1.out" }, "<")
-      gsap.to(".tg-chat-cta", { autoAlpha: 1 })
-    });
-
-
-    if (document.getElementById('enterSection').style.display === 'flex') {
-      lenis.stop()
-    } else {
-      lenis.start()
-    }
-
-    $(".skip-wrapper").on("click", function () {
-      lenis.start();
-    });
-    $(".submit-btn").on("click", function () {
-      lenis.start();
-    });
-
-
   </script>
 
 

@@ -123,8 +123,9 @@ const FixareChat = {
         <button class="fc-send" id="fc-send">&gt;</button>
       </div>
       <div class="fc-name-prompt" id="fc-name-prompt">
-        <div style="color:${this._config.primaryColor}; font-size:12px; letter-spacing:2px; text-transform:uppercase;">Enter your name to start chatting</div>
-        <input type="text" id="fc-name-input" placeholder="Your name">
+        <div style="color:${this._config.primaryColor}; font-size:12px; letter-spacing:2px; text-transform:uppercase;">Enter your details to start chatting</div>
+        <input type="text" id="fc-name-input" placeholder="Your name" required>
+        <input type="email" id="fc-email-input" placeholder="Your email (optional)">
         <button id="fc-name-submit">Continue</button>
       </div>
     `;
@@ -144,6 +145,13 @@ const FixareChat = {
     if (!name) return;
     this._config.visitorName = name;
     localStorage.setItem('fixare_chat_name', name);
+
+    // Save email if provided
+    const emailInput = document.getElementById('fc-email-input');
+    const email = emailInput ? emailInput.value.trim() : '';
+    if (email) {
+      localStorage.setItem('fixare_chat_email', email);
+    }
 
     document.getElementById('fc-name-prompt').style.display = 'none';
     document.getElementById('fc-input-area').style.display = 'flex';
