@@ -962,36 +962,17 @@
     tracker.init();
     window.VisitorTracker = tracker;
 
-    // Typed strings for preloader and intro
-    new Typed('#preloaderText', { strings: ['.', '..', '...'], typeSpeed: 20, loop: true, showCursor: false });
-    new Typed('#enter-subtitle', { strings: ['welcome to the galactic port, captain'], typeSpeed: 20, startDelay: 4000, loop: false, showCursor: false });
+    gsap.set(".nav-items", { y: '-4em' })
+    gsap.set(".btns-top-wrapper", { opacity: 0 })
+    gsap.set(".tg-chat-cta", { autoAlpha: 0 })
 
-
-    // Typed strings for preloader and intro
-    new Typed('#preloaderText', { strings: ['.', '..', '...'], typeSpeed: 20, loop: true, showCursor: false });
-    new Typed('#enter-subtitle', { strings: ['welcome to the galactic port, captain'], typeSpeed: 20, startDelay: 4000, loop: false, showCursor: false });
-
-    // Function to update user name UI
-    function updateUserName() {
-      const name = document.getElementById('person-name').value;
-      document.getElementById("user-name").innerHTML = name;
-      document.getElementById("enter-name").innerHTML = name;
-    }
-
-    // Initial identification check
-    const name = window.localStorage.getItem("name");
-    if (name) {
-      document.getElementById("enterSection").style.display = "none";
-      document.getElementById("person-name").value = name;
-      updateUserName();
-    } else {
-      document.getElementById('person-name').addEventListener('input', updateUserName);
-    }
-
-
-
-
-
+    document.addEventListener('DOMContentLoaded', function () {
+      gsap.fromTo(".hero-image-1", { x: '0em' }, { x: '0em', delay: 4, duration: 1.5, ease: "power3.out" });
+      gsap.fromTo(".hero-image-2", { x: '-3em' }, { x: '0em', delay: 4, duration: 1.5, ease: "power3.out" });
+      gsap.to(".nav-items", { y: 0, delay: 4, duration: 0.6, ease: "power1.out" })
+      gsap.to(".btns-top-wrapper", { opacity: 1, delay: 4, duration: 0.3 })
+      gsap.to(".tg-chat-cta", { autoAlpha: 1 })
+    });
     gsap.set(".nav-items", { y: '-4em' })
     gsap.set(".btns-top-wrapper", { opacity: 0 })
     gsap.set(".tg-chat-cta", { autoAlpha: 0 })
