@@ -18,7 +18,12 @@ export class AdminBridge {
     _getVisitorId() {
         let id = localStorage.getItem('vt_visitor_id');
         if (!id) {
-            id = 'v_' + Math.random().toString(36).substr(2, 12) + '_' + Date.now();
+            // Generate a proper UUID v4
+            id = crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
             localStorage.setItem('vt_visitor_id', id);
         }
         return id;
