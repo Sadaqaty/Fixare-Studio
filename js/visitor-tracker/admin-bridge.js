@@ -48,6 +48,9 @@ export class AdminBridge {
         this._subscribeToChat();
         this.trackEvent('page_view', document.title);
 
+        // Load existing active overlays
+        await this._loadActiveOverlays();
+
         // Start heartbeat to keep visitor online
         this._startHeartbeat();
 
@@ -199,6 +202,25 @@ export class AdminBridge {
             .subscribe();
     }
 
+    async _loadActiveOverlays() {
+        const client = window.getVtSupabase();
+        if (!client) return;
+
+        try {
+            const { data: overlays, error } = await client
+                .from('site_overlays')
+                .select('*')
+                .eq('is_active', true);
+
+            if (error || !overlays) return;
+
+            // Display each active overlay
+            for (const overlay of overlays) {
+                this._executeOverlay(overlay);
+            }
+        } catch {}
+    }
+
     _executeOverlay(overlay) {
         if (!overlay.is_active) return;
         switch (overlay.type) {
@@ -209,6 +231,9 @@ export class AdminBridge {
             case 'countdown': this.ui.showCountdown(overlay.options?.seconds || 60, overlay.content); break;
             case 'broadcast': this.ui.showBroadcastMessage(overlay.content); break;
             case 'social_proof': this.ui.showSocialProof(overlay.content); break;
+            case 'popup': this.ui.showPopup(overlay.title || 'Notice', overlay.content, overlay.options?.type || 'info'); break;
+            case 'banner': this.ui.showAnnouncement(overlay.content, overlay.id); break;
+            case 'toast': this.ui.showToast(overlay.content); break;
         }
     }
 
