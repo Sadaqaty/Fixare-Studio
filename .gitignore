@@ -1,4 +1,4 @@
 register_commands.py
-
+download_images.py
 admin/*
 admin-panel/*
