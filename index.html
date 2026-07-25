@@ -1167,19 +1167,25 @@
 
     // Function to update user name UI
     function updateUserName() {
-      const name = document.getElementById('person-name').value;
-      document.getElementById("user-name").innerHTML = name;
-      document.getElementById("enter-name").innerHTML = name;
+      const nameEl = document.getElementById('person-name');
+      if (!nameEl) return;
+      const name = nameEl.value;
+      const userNameEl = document.getElementById("user-name");
+      const enterNameEl = document.getElementById("enter-name");
+      if (userNameEl) userNameEl.innerHTML = name;
+      if (enterNameEl) enterNameEl.innerHTML = name;
     }
 
     // Initial identification check
     const name = window.localStorage.getItem("name");
-    if (name) {
-      document.getElementById("enterSection").style.display = "none";
-      document.getElementById("person-name").value = name;
+    const enterSection = document.getElementById("enterSection");
+    const personNameEl = document.getElementById("person-name");
+    if (name && enterSection && personNameEl) {
+      enterSection.style.display = "none";
+      personNameEl.value = name;
       updateUserName();
-    } else {
-      document.getElementById('person-name').addEventListener('input', updateUserName);
+    } else if (personNameEl) {
+      personNameEl.addEventListener('input', updateUserName);
     }
 
 
@@ -1267,8 +1273,10 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      var splideEl = document.querySelector('.splide');
+      if (!splideEl) return;
 
-      var centeredSlider = new Splide('.splide', {
+      var centeredSlider = new Splide(splideEl, {
 
         type: 'loop',
         perMove: 1,

@@ -177,10 +177,8 @@ export class UI {
             container.style.display = 'flex';
             this.unreadCount = 0;
             this._updateUnreadBadge();
-            this.telegram.startPolling(this.config.activePollingInterval);
         } else {
             container.style.display = 'none';
-            this.telegram.startPolling(this.config.pollingInterval);
         }
     }
 
