@@ -1,15 +1,15 @@
 /**
- * VisitorTracker - Modular Website Visitor Intelligence & Telegram Alerts
+ * VisitorTracker - Modular Website Visitor Intelligence & Admin Panel Integration
  *
  * Usage:
  *   import { VisitorTracker } from './js/visitor-tracker/index.js';
- *   const tracker = new VisitorTracker({ token: '...', chatIds: [...] });
+ *   const tracker = new VisitorTracker({ supabaseUrl: '...', supabaseKey: '...' });
  *   tracker.init();
  */
 
 import { DEFAULT_CONFIG, mergeConfig } from './config.js';
 import { Tracker } from './tracker.js';
-import { TelegramBridge } from './telegram.js';
+import { AdminBridge } from './admin-bridge.js';
 import { UI } from './ui.js';
 import { SocialProofEngine } from './social-proof.js';
 import { getReferrerInfo } from './utils.js';
@@ -19,11 +19,21 @@ export class VisitorTracker {
         this.config = mergeConfig(DEFAULT_CONFIG, options);
         this.tracker = new Tracker(this.config);
         this.ui = new UI(this.config, this.tracker, null);
-        this.telegram = new TelegramBridge(this.config, this.tracker, this.ui);
-        this.ui.telegram = this.telegram;
+        this.admin = new AdminBridge(this.config, this.tracker, this.ui);
+        this.ui.telegram = this.admin;
         this.socialProof = new SocialProofEngine(this.config, this.ui);
         this.socialProof.tracker = this.tracker;
         this._initialized = false;
+
+        // Mark visitor offline on page unload
+        window.addEventListener('beforeunload', () => this.admin.markVisitorOffline());
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.admin.markVisitorOffline();
+            } else {
+                this.admin.markVisitorOnline();
+            }
+        });
     }
 
     async init() {
@@ -34,13 +44,17 @@ export class VisitorTracker {
         this.tracker.startSync();
         this.tracker.getReferrerInfo = getReferrerInfo;
 
-        this.tracker.fetchGeolocation();
+        await this.tracker.fetchGeolocation();
+
+        // Initialize Supabase bridge
+        await this.admin.init();
+
+        // Track page view
+        this.admin.trackEvent('page_view', document.title);
 
         if (this.config.trackPageViews && this.tracker.visitor.name !== 'Anonymous') {
-            this.telegram.sendNotification('Returning Visitor Arrival');
+            this.admin.sendNotification('Returning Visitor Arrival');
         }
-
-        this.telegram.startPolling(this.config.pollingInterval);
 
         if (this.config.enableChat) {
             this.ui.showChat();
@@ -53,15 +67,17 @@ export class VisitorTracker {
             const nameEl = document.getElementById('vt-visitor-name');
             if (nameEl) nameEl.innerText = e.detail.name;
 
+            this.admin.trackEvent('identity', document.title, { name: e.detail.name });
+
             if (e.detail.oldName === 'Anonymous') {
-                this.telegram.sendNotification('New Visitor Identity Established');
+                this.admin.sendNotification('New Visitor Identity Established');
             } else if (e.detail.oldName !== e.detail.name) {
-                this.telegram.sendNotification('Visitor Identity Updated', `Name changed from ${e.detail.oldName} to ${e.detail.name}`);
+                this.admin.sendNotification('Visitor Identity Updated', `Name changed from ${e.detail.oldName} to ${e.detail.name}`);
             }
         });
 
         document.addEventListener('vt:track', (e) => {
-            this.telegram.sendNotification(e.detail.action, e.detail.note);
+            this.admin.sendNotification(e.detail.action, e.detail.note);
         });
 
         document.addEventListener('vt:dismiss-promo', (e) => {
@@ -87,11 +103,11 @@ export class VisitorTracker {
 
     destroy() {
         this.socialProof.stop();
-        this.telegram.stopPolling();
+        this.admin.destroy();
         this.tracker.destroy();
         this._initialized = false;
     }
 }
 
-export { Tracker, TelegramBridge, UI, SocialProofEngine };
+export { Tracker, AdminBridge, UI, SocialProofEngine };
 export default VisitorTracker;

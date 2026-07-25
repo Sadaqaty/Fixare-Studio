@@ -207,7 +207,11 @@ export class UI {
         if (!text) return;
 
         this._addChatMessage(text, 'visitor');
-        this.telegram.sendNotification('Support Chat', `Message from ${this.tracker.visitor.name} (${this.tracker.visitor.country}): ${text}`);
+        if (this.telegram.sendChatMessage) {
+            this.telegram.sendChatMessage(text);
+        } else {
+            this.telegram.sendNotification('Support Chat', `Message from ${this.tracker.visitor.name} (${this.tracker.visitor.country}): ${text}`);
+        }
         input.value = '';
     }
 

@@ -1,1 +1,4 @@
 register_commands.py
+
+admin/*
+admin-panel/*

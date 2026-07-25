@@ -3,14 +3,12 @@
  */
 
 export const DEFAULT_CONFIG = {
-    token: '',
-    chatIds: [],
+    supabaseUrl: '',
+    supabaseKey: '',
     trackPageViews: true,
     socialProof: true,
     siteName: 'VisitorTracker',
     geolocationProvider: 'ipapi',
-    pollingInterval: 30000,
-    activePollingInterval: 5000,
     enableSocialProof: true,
     enableChat: true,
     enableNotifications: true,
@@ -21,7 +19,7 @@ export const DEFAULT_CONFIG = {
     hooks: {
         onVisitorArrival: null,
         onChatMessage: null,
-        onCommand: null,
+        onOverlay: null,
         onError: null,
     }
 };

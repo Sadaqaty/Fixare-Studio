@@ -690,11 +690,13 @@
 
   </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../js/visitor-tracker/supabase-client.js"></script>
     <script type="module">
         import { VisitorTracker } from '../../js/visitor-tracker/index.js';
         const tracker = new VisitorTracker({
-            token: '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w',
-            chatIds: ['6541442910', '5904725547'],
+            supabaseUrl: 'https://nwtrcdehilebjafrdyay.supabase.co',
+            supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53dHJjZGVoaWxlYmphZnJkeWF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NjU0MzMsImV4cCI6MjEwMDU0MTQzM30.vGXBpayxlG8_Smsdg8XVS06e1QoJoX2yNT5bSl7eiLQ',
             siteName: 'Fixare Studio - Apply Online'
         });
         tracker.init();

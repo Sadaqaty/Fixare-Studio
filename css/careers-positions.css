@@ -1,0 +1,207 @@
+/* Careers Positions Styles */
+.positions-section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.positions-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.positions-header h2 {
+  font-family: 'DDT', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #154359;
+  margin-bottom: 16px;
+}
+
+.positions-header p {
+  font-size: 1.1rem;
+  color: #154359;
+  opacity: 0.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#positions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.position-card {
+  background: white;
+  border: 1px solid rgba(21, 67, 89, 0.1);
+  border-radius: 12px;
+  padding: 32px;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease-out both;
+  position: relative;
+  overflow: hidden;
+}
+
+.position-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #00d2ff, #0b6376);
+}
+
+.position-card:hover {
+  box-shadow: 0 10px 40px rgba(21, 67, 89, 0.15);
+  transform: translateY(-2px);
+}
+
+.position-card.left {
+  margin-right: 10%;
+}
+
+.position-card.right {
+  margin-left: 10%;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.position-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.position-title {
+  font-family: 'DDT', sans-serif;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #154359;
+  margin: 0;
+}
+
+.position-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.position-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.position-badge.type {
+  background: rgba(0, 210, 255, 0.1);
+  color: #0b6376;
+}
+
+.position-badge.location {
+  background: rgba(11, 99, 118, 0.1);
+  color: #0b6376;
+}
+
+.position-badge.dept {
+  background: rgba(21, 67, 89, 0.1);
+  color: #154359;
+}
+
+.position-desc {
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.position-reqs {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: rgba(21, 67, 89, 0.03);
+  border-radius: 8px;
+}
+
+.position-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.position-apply-btn {
+  display: inline-block;
+  padding: 12px 32px;
+  background: #154359;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: 'DDT', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.position-apply-btn:hover {
+  background: #0b6376;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(11, 99, 118, 0.3);
+}
+
+/* Empty state */
+.positions-empty {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.positions-empty-icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+  opacity: 0.3;
+}
+
+.positions-empty h3 {
+  font-family: 'DDT', sans-serif;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #154359;
+  margin-bottom: 12px;
+}
+
+.positions-empty p {
+  color: #666;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .position-card.left,
+  .position-card.right {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .position-header {
+    flex-direction: column;
+  }
+
+  .positions-header h2 {
+    font-size: 1.8rem;
+  }
+}
