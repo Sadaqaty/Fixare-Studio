@@ -224,13 +224,19 @@ const FixareChat = {
       }, { onConflict: 'id' });
     } catch (e) { /* ignore */ }
 
-    // Insert chat message
+    // Insert chat message (handle foreign key gracefully)
+    const chatData = {
+      visitor_id: this._visitorId,
+      sender: 'visitor',
+      message: text
+    };
     try {
-      await this._supabase.from('chat_messages').insert({
-        visitor_id: this._visitorId,
-        sender: 'visitor',
-        message: text
-      });
+      const { error } = await this._supabase.from('chat_messages').insert(chatData);
+      if (error && error.code === '23503') {
+        // Foreign key error - insert without visitor_id
+        delete chatData.visitor_id;
+        await this._supabase.from('chat_messages').insert(chatData);
+      }
     } catch (e) {
       console.error('[FixareChat] Send error:', e);
     }

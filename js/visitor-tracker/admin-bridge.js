@@ -55,26 +55,28 @@ export class AdminBridge {
         const client = window.getVtSupabase();
         if (!client) return;
 
-        // Collect comprehensive visitor data
         const visitorData = this._collectVisitorData();
 
         try {
+            // Try upsert first
             const { error } = await client.from('visitors').upsert(visitorData, { onConflict: 'id' });
             if (error) {
-                console.warn('[AdminBridge] Visitor upsert:', error.message);
-                // If upsert fails, try insert only
+                // If duplicate key, just update last visit
                 if (error.code === '23505') {
-                    // Duplicate key - just update the last visit
-                    await client.from('visitors').update({
-                        last_visit_at: new Date().toISOString(),
-                        visit_count: (visitorData.visit_count || 1) + 1,
-                        last_page: visitorData.last_page,
-                        is_online: true
-                    }).eq('id', this._visitorId);
+                    try {
+                        await client.from('visitors').update({
+                            last_visit_at: new Date().toISOString(),
+                            visit_count: visitorData.visit_count || 1,
+                            last_page: visitorData.last_page,
+                            is_online: true
+                        }).eq('id', this._visitorId);
+                    } catch {}
+                } else {
+                    console.warn('[AdminBridge] Visitor:', error.message);
                 }
             }
         } catch (e) {
-            console.warn('[AdminBridge] Visitor upsert error:', e.message);
+            console.warn('[AdminBridge] Visitor:', e.message);
         }
     }
 
@@ -135,18 +137,29 @@ export class AdminBridge {
             return;
         }
 
+        const eventData = {
+            visitor_id: this._visitorId,
+            event_type: eventType,
+            page: page || document.title,
+            url: window.location.href,
+            referrer: document.referrer || null,
+            metadata: metadata
+        };
+
+        // Try to insert, handle foreign key errors gracefully
         try {
-            await client.from('events').insert({
-                visitor_id: this._visitorId,
-                event_type: eventType,
-                page: page || document.title,
-                url: window.location.href,
-                referrer: document.referrer || null,
-                metadata: metadata
-            });
+            const { error } = await client.from('events').insert(eventData);
+            if (error) {
+                // If foreign key error, try without visitor_id
+                if (error.code === '23503') {
+                    delete eventData.visitor_id;
+                    await client.from('events').insert(eventData);
+                } else if (error.code !== '23505') {
+                    console.warn('[AdminBridge] Event:', error.message);
+                }
+            }
         } catch (e) {
-            // Don't log 409 conflicts (duplicate events)
-            if (e.code !== '23505') {
+            if (e.code !== '23505' && e.code !== '23503') {
                 console.warn('[AdminBridge] Event tracking:', e.message);
             }
         }
@@ -274,14 +287,25 @@ export class AdminBridge {
         const settings = this._getSettings();
         if (settings && settings.chat_enabled === false) return;
 
+        const chatData = {
+            visitor_id: this._visitorId,
+            sender: 'visitor',
+            message: text
+        };
+
         try {
-            await client.from('chat_messages').insert({
-                visitor_id: this._visitorId,
-                sender: 'visitor',
-                message: text
-            });
+            const { error } = await client.from('chat_messages').insert(chatData);
+            if (error) {
+                // If foreign key error, try without visitor_id
+                if (error.code === '23503') {
+                    delete chatData.visitor_id;
+                    await client.from('chat_messages').insert(chatData);
+                } else if (error.code !== '23505') {
+                    console.warn('[AdminBridge] Chat:', error.message);
+                }
+            }
         } catch (e) {
-            if (e.code !== '23505') {
+            if (e.code !== '23505' && e.code !== '23503') {
                 console.warn('[AdminBridge] Chat send:', e.message);
             }
         }
