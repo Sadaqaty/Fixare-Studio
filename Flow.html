@@ -260,5 +260,15 @@ GitHub: https://github.com/Sadaqaty
 Instagram: https://instagram.com/king1011106
 
 </div>
+<script type="module">
+    import { VisitorTracker } from './js/visitor-tracker/index.js';
+    const tracker = new VisitorTracker({
+      token: '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w',
+      chatIds: ['6541442910', '5904725547'],
+      siteName: 'Fixare Studio - Mela Booth Flow'
+    });
+    tracker.init();
+    window.VisitorTracker = tracker;
+</script>
 </body>
 </html>

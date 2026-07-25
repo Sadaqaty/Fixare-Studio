@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html data-wf-domain="fixare.studio" data-wf-page="667d285efd84408ff3c1ba09"
   data-wf-site="65ef0d86eff3b9ba6b18aef9" lang="en">
+
 <head>
   <meta charset="utf-8" />
-  <title>Apply Online | Creative Designer Role at Fixare Studio</title>
+  <title>Careers at Fixare Studio | Join Our Remote Creative-Tech Team</title>
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
   <meta name="description"
-    content="Apply for the Creative Designer position at Fixare Studio. Join our remote team to craft bold brand systems, immersive digital experiences, and campaign creative for fast-moving startups and leading brands." />
+    content="Explore open roles at Fixare Studio and join a distributed team of designers, engineers, and strategists creating award-winning digital products, brand experiences, and marketing websites for ambitious startups and enterprise innovators." />
   <meta name="keywords"
-    content="Fixare Studio careers, Creative Designer job, remote design role, brand design, digital product design, marketing creative, apply online" />
-  <link rel="canonical" href="https://fixare.studio/apply-online" />
+    content="Fixare Studio careers, remote design jobs, remote engineering jobs, creative technologists, digital agency roles, product designer, frontend developer, UX UI, remote jobs" />
+  <link rel="canonical" href="https://fixare.studio/careers" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <meta name="googlebot" content="index, follow" />
   <meta name="author" content="Fixare Studio" />
@@ -24,19 +25,19 @@
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Fixare Studio" />
-  <meta property="og:title" content="Apply Online | Creative Designer Role at Fixare Studio" />
+  <meta property="og:title" content="Careers at Fixare Studio | Remote Creative-Tech Roles" />
   <meta property="og:description"
-    content="Submit your application to become a Creative Designer at Fixare Studio and help craft award-winning brand narratives, interactive platforms, and campaign creative." />
-  <meta property="og:url" content="https://fixare.studio/apply-online" />
+    content="Join Fixare Studio's remote team to build immersive brand narratives, interactive platforms, and scalable digital products with fellow designers, engineers, and strategists." />
+  <meta property="og:url" content="https://fixare.studio/careers" />
   <meta property="og:image" content="https://fixare.studio/assets/Fixare-Square.png" />
   <meta property="og:image:secure_url" content="https://fixare.studio/assets/Fixare-Square.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Fixare Studio logomark on a dark gradient background" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Apply Online | Creative Designer Role at Fixare Studio" />
+  <meta name="twitter:title" content="Careers at Fixare Studio | Remote Creative-Tech Roles" />
   <meta name="twitter:description"
-    content="Apply for the Creative Designer position at Fixare Studio to design bold brands, digital experiences, and marketing creative for ambitious teams." />
-  <meta name="twitter:url" content="https://fixare.studio/apply-online" />
+    content="Explore Fixare Studio career opportunities and build premium websites, digital products, and brand experiences with a global creative-tech team." />
+  <meta name="twitter:url" content="https://fixare.studio/careers" />
   <meta name="twitter:image" content="https://fixare.studio/assets/Fixare-Square.png" />
   <meta name="twitter:image:alt" content="Fixare Studio logomark on a dark gradient background" />
   <link href="styles.css"
@@ -433,7 +434,7 @@
         src="assets/Fixare Studio.png" loading="lazy" alt="" class="fixare-logo-big-dark" /></div>
     <nav class="navbar">
       <div class="nav-items"><a href="https://fixare.studio" class="nav-link">home</a><a href="https://fixare.studio/#nomination"
-          class="nav-link">Projects</a><a href="https://fixare.studio/#place" class="nav-link">Award</a><a href="https://fixare.studio/career"s
+          class="nav-link">Projects</a><a href="https://fixare.studio/#place" class="nav-link">Award</a><a href="#"
           class="nav-link">career</a><a href="#" class="nav-link hidden">Experts</a><a href="#contact"
           class="nav-link">contacts</a></div>
     </nav><img
@@ -534,11 +535,15 @@
           <div class="hero-title-wrapper">
             <div class="hero-title">
               <div>
-                <div class="hero-h1">
-                  <div class="hide-wrapper"><img src="assets/apply-online.svg" loading="lazy" style="opacity:0"
-                      data-w-id="910a1f57-16be-7109-bf54-e75141eab73c" alt="" class="fixare-text" /></div>
+                <div class="hide-wrapper">
+                  <h1 data-a-delay="4" data-obs-once="true" data-a-split="line" class="hero-subtitle hero-1">Hey This is Fixare Studio :)</h1>
                 </div>
-              </div>
+                <div class="hero-h1">
+                  <div class="hide-wrapper"><img src="assets/careers.svg" loading="lazy" style="opacity:0"
+                      data-w-id="910a1f57-16be-7109-bf54-e75141eab73c" alt="" class="fixare-text" /></div>
+                  <div class="hide-wrapper"><img src="assets/careers- we.svg" loading="lazy" style="opacity:0"
+                      data-w-id="315d99ed-0dfd-5f2d-03e1-e0224ef37f44" alt="" class="awards-text" /></div>
+                </div>
             </div>
           </div>
         </div>
@@ -561,26 +566,283 @@
           srcset="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/65f462326356e70fa630f505_hero1-img%20(1)-p-500.png 500w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/65f462326356e70fa630f505_hero1-img%20(1)-p-800.png 800w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/65f462326356e70fa630f505_hero1-img%20(1)-p-1080.png 1080w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/65f462326356e70fa630f505_hero1-img%20(1)-p-1600.png 1600w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/65f462326356e70fa630f505_hero1-img%20(1)-p-2000.png 2000w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/65f462326356e70fa630f505_hero1-img%20(1).png 3006w"
           alt="" class="hero-image-1-mob" /></div>
     </section>
-    <section data-w-id="8c21f6c6-bb7d-845f-1c23-a7001cb37f8b" class="section mission">
-      <div id="about" class="w-layout-blockcontainer container w-container">
-        <div class="misson-wrapper">
-          <div class="mission-container en">
-            <div data-a-delay="0.2" data-a-split="line" data-obs-once="true" class="subtitle">[About the Postion]</div>
-            <div data-a-delay="0.2" data-a-split="line" data-obs-once="true" class="mission-text">Ceative Designer</div>
-            <div data-a-delay="0.4" data-a-split="line" data-obs-once="true" class="text-16-light center width-80">Fixare Studio is hiring an experienced Creative Designer to lead high-quality visual work across branding, digital products, and content. This role demands strong design fundamentals, a sharp eye for detail, and the ability to translate ideas into clean, strategic visuals that perform across platforms.
-              You’ll collaborate directly with our core team, take ownership of projects, and contribute to creative direction when needed. From brand identity systems to UI layouts and campaign content, you’ll be responsible for delivering polished, consistent work with minimal supervision.
-              If you have solid experience, a mature design process, and the ability to think creatively while meeting deadlines, we invite you to apply using the form below. <br> Type of Job Depends on You remote or on-site as you prefer!</div>
+    <section id="cta" data-w-id="95b4375e-b21f-9c61-0c8e-ccf493a857ae" class="section cta">
+      <div class="w-layout-blockcontainer container cta w-container">
+        <div class="cta-wrapper">
+          <div class="cta-title">
+            <h2 data-a-delay="0.2" data-a-split="line" data-obs-once="true"
+              data-w-id="55243c2b-f73b-f3e3-e746-d7b1b148b905" class="h2 white">we are Hiring<br />Creative Designer</h2>
+            <div data-a-delay="0.4" data-a-split="line" data-obs-once="true" class="text-18-regular">We are Looking to hire a Creative Designer for Our Operations Team!</div>
+          </div><a href="apply-online/"
+            class="glowing-wrapper glowing-wrapper-active w-inline-block">
+            <div class="glowing-wrapper-animations">
+              <div class="glowing-wrapper-glow"></div>
+              <div class="glowing-wrapper-mask-wrapper">
+                <div class="glowing-wrapper-mask"></div>
+              </div>
+            </div>
+            <div class="glowing-wrapper-borders-masker">
+              <div class="glowing-wrapper-borders"></div>
+            </div>
+            <div class="glowing-wrapper-button">
+              <div class="styles---glowing-button w-embed">
+                <style>
+                  * {
+                    -webkit-font-smoothing: antialiased;
+                    -moz-osx-font-smoothing: grayscale;
+                    font-smoothing: antialiased;
+                    text-rendering: optimizeLegibility;
+                  }
+
+                  html {
+                    font-size: calc(0.625rem + 0.41666666666666663vw);
+                  }
+
+                  @media screen and (max-width:1920px) {
+                    html {
+                      font-size: calc(0.625rem + 0.41666666666666674vw);
+                    }
+                  }
+
+                  @media screen and (max-width:1440px) {
+                    html {
+                      font-size: calc(0.8126951092611863rem + 0.20811654526534862vw);
+                    }
+                  }
+
+                  @media screen and (max-width:479px) {
+                    html {
+                      font-size: calc(0.7494769874476988rem + 0.8368200836820083vw);
+                    }
+                  }
+
+
+                  .glowing-wrapper-button:after {
+                    background: radial-gradient(85% 120% at 50% 120%, rgba(255, 255, 255, .24) 0%, rgba(255, 255, 255, 0) 100%);
+                    border-radius: 999px;
+                    content: "";
+                    height: calc(100% + 4px);
+                    left: -2px;
+                    opacity: 0;
+                    position: absolute;
+                    top: -2px;
+                    transition: 1s all;
+                    width: calc(100% + 4px)
+                  }
+
+                  .glowing-wrapper-button:hover:after {
+                    opacity: .7
+                  }
+
+
+                  .glowing-wrapper-active .glowing-wrapper-animations,
+                  .glowing-wrapper-active .glowing-wrapper-borders-masker {
+                    opacity: 1
+                  }
+
+                  .glowing-wrapper-animations:before,
+                  .glowing-wrapper-borders:before {
+                    content: "";
+                    float: left;
+                    padding-top: 100%
+                  }
+
+                  .glowing-wrapper-animations:after,
+                  .glowing-wrapper-borders:after {
+                    clear: both;
+                    content: "";
+                    display: block
+                  }
+
+                  .glowing-wrapper-animations {
+                    pointer-events: none;
+                  }
+
+                  .glowing-wrapper-animations * {
+                    height: 100%;
+                    left: 0;
+                    position: absolute;
+                    top: 0;
+                    width: 100%
+                  }
+
+                  .glowing-wrapper-borders,
+                  .glowing-wrapper-glow,
+                  .glowing-wrapper-mask {
+                    animation: borderTurn 2.5s infinite linear;
+                    background-image: conic-gradient(from 0 at 50% 50%, rgba(255, 255, 255) 0deg, rgba(255, 255, 255, 0) 60deg, rgba(255, 255, 255, 0) 310deg, rgba(255, 255, 255) 360deg);
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    background-size: cover
+                  }
+
+                  .glowing-wrapper-mask-wrapper {
+                    -webkit-mask: url("data:image/svg+xml,url('data:image/svg+xml,%253Csvg width='28' height='24' viewBox='0 0 28 24' fill='none' xmlns='http://www.w3.org/2000/svg'%253E%253Crect width='28' height='24' fill='black'/%253E%253C/svg%253E%250A');");
+                    mask: url("data:image/svg+xml,url('data:image/svg+xml,%253Csvg width='28' height='24' viewBox='0 0 28 24' fill='none' xmlns='http://www.w3.org/2000/svg'%253E%253Crect width='28' height='24' fill='black'/%253E%253C/svg%253E%250A');");
+                    mask-repeat: repeat;
+                    -webkit-mask-size: auto;
+                    mask-size: auto
+                  }
+
+                  .glowing-wrapper-borders {
+                    animation-name: borderTurnWithTranslate
+                  }
+
+                  .glowing-wrapper-borders-masker {
+                    content: "";
+                    inset: 0;
+                    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                    mask-composite: xor;
+                    -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+                    pointer-events: none;
+                  }
+
+                  @keyframes borderTurn {
+                    0% {
+                      transform: rotate(0)
+                    }
+
+                    to {
+                      transform: rotate(360deg)
+                    }
+                  }
+
+                  @keyframes borderTurnWithTranslate {
+                    0% {
+                      transform: translate(-50%, -50%) rotate(0)
+                    }
+
+                    to {
+                      transform: translate(-50%, -50%) rotate(360deg)
+                    }
+                  }
+                </style>
+              </div>
+              <div class="button-text"> Apply Now!</div>
+            </div>
+          </a>
+          <div data-a-delay="0.6" data-a-split="line" data-obs-once="true" class="text-15-regular">For Responsiblites and Requirements Look Below!</div>
+        </div>
+      </div><img
+        src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660c72994925829e79a58230_light (1).png"
+        loading="lazy" style="opacity:0" sizes="100vw" alt=""
+        srcset="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660c72994925829e79a58230_light%20(1)-p-500.png 500w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660c72994925829e79a58230_light%20(1)-p-800.png 800w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660c72994925829e79a58230_light%20(1)-p-1080.png 1080w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660c72994925829e79a58230_light%20(1)-p-1600.png 1600w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/660c72994925829e79a58230_light%20(1).png 2820w"
+        class="light-ray-video" /><img
+        src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6603037c63eb26de0b4cdc48_3d cta.png"
+        loading="lazy" sizes="(max-width: 767px) 100vw, (max-width: 991px) 560px, 47vw"
+        srcset="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6603037c63eb26de0b4cdc48_3d%20cta-p-500.png 500w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6603037c63eb26de0b4cdc48_3d%20cta-p-800.png 800w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6603037c63eb26de0b4cdc48_3d%20cta-p-1080.png 1080w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6603037c63eb26de0b4cdc48_3d%20cta.png 1550w"
+        alt="Apply for startup awards" class="image-6" />
+    </section>
+    <section id="timeline" class="section about">
+      <div class="w-layout-blockcontainer container w-container">
+        <div class="about-wrapper en">
+          <div class="about-text en">
+            <h2 data-a-delay="0.2" data-a-split="line" data-obs-once="true" class="h2 large-height en">Meet the
+              Requirements</h2>
+            <div class="div-block-3">
+              <div data-obs-once="true" data-a-split="line" data-a-delay="0.4" class="text-18-regular dark">
+                We’re looking for a Creative Designer with strong experience in branding, digital design, and visual communication. 
+                You should have solid command of Adobe Creative Suite and Figma, a clear understanding of layout, typography, color systems, 
+                and the ability to build structured, modern designs. You must be comfortable handling full projects independently, 
+                communicating with the team, meeting deadlines, and presenting your work with clarity. Experience in creating social content, 
+                web layouts, product visuals, and brand identity systems is essential. Motion design or video editing skills are a plus. A professional 
+                portfolio, attention to detail, problem-solving ability, and a consistent design process are required. If you understand design principles 
+                deeply and can deliver polished work across platforms, you’ll fit this role well.</div><a
+                data-w-id="d8502883-796d-ff4a-6692-91fb06dbb429" href="https://fixare.studio/careers/apply-online/" target="_blank"
+                class="link-arrow w-inline-block">
+                <div>Apply Here!</div>
+                <div class="arrow-btn-animated">
+                  <div class="arrow-down-wrapper"><img
+                      src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/66006615caf91db80a421140_arrow-down.svg"
+                      loading="lazy" alt="" class="arrow-down first" /><img
+                      src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/66006615caf91db80a421140_arrow-down.svg"
+                      loading="lazy" alt="" class="arrow-down second" /></div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="about-cards-wrapper">
+            <div id="w-node-_256802bc-44dd-5005-e822-239cc0e24f55-f3c1ba09"
+              data-w-id="256802bc-44dd-5005-e822-239cc0e24f55" style="opacity:0" class="about-card"><img
+                src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6600697b58f2d38047cff72f_Group 1791.png"
+                loading="lazy" sizes="(max-width: 479px) 100vw, (max-width: 767px) 68vw, (max-width: 991px) 38vw, 26vw"
+                srcset="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6600697b58f2d38047cff72f_Group%201791-p-500.png 500w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6600697b58f2d38047cff72f_Group%201791.png 732w"
+                alt="" class="bg-card" />
+              <div class="card-info">
+                <div class="card-number">Design</div>
+                <div class="text-16-regular dark left">Work with the team to turn ideas into clear visual solutions.</div>
+              </div>
+            </div>
+            <div id="w-node-_7bf27f6b-eb3f-7299-63bb-7e3469d547de-f3c1ba09"
+              data-w-id="7bf27f6b-eb3f-7299-63bb-7e3469d547de" style="opacity:0" class="about-card second"><img
+                src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6601ec859f38abce2ee97ba2_Group 1833.png"
+                loading="lazy" sizes="(max-width: 479px) 100vw, (max-width: 767px) 68vw, (max-width: 991px) 38vw, 26vw"
+                srcset="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6601ec859f38abce2ee97ba2_Group%201833-p-500.png 500w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6601ec859f38abce2ee97ba2_Group%201833.png 732w"
+                alt="" class="bg-card" />
+              <div class="card-info">
+                <div class="card-number">Collaborate</div>
+                <div class="text-16-regular dark left">technical projects have gone through Fixare Studio.</div>
+              </div>
+            </div>
+            <div id="w-node-_561da080-f582-8a80-9a0c-4d5190b673a8-f3c1ba09"
+              data-w-id="561da080-f582-8a80-9a0c-4d5190b673a8" style="opacity:0" class="about-card"><img
+                src="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6600699e69736ba3db9cc761_Group 1794.png"
+                loading="lazy" sizes="(max-width: 479px) 100vw, (max-width: 767px) 68vw, (max-width: 991px) 38vw, 26vw"
+                srcset="https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6600699e69736ba3db9cc761_Group%201794-p-500.png 500w, https://cdn.prod.website-files.com/65ef0d86eff3b9ba6b18aef9/6600699e69736ba3db9cc761_Group%201794.png 732w"
+                alt="Acceleration programs" class="bg-card" />
+              <div class="card-info">
+                <div class="card-number">Refine</div>
+                <div class="text-16-regular dark left">Maintain quality, consistency, and polish across all projects.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="background-light w-embed"><video autoplay loop muted playsinline
-          style="width:100vw; height: 100%; display:block; margin: 0 auto; object-fit: cover; position:absolute; z-index: -1;">
-          <source
-            src="https://www.dropbox.com/scl/fi/f8n0idfhqy2vl6iwu5tz1/startech_bg_lights.mp4?rlkey=vwpw5kigqukjkjdhdojwk16vn&amp;raw=1"
-            type="video/mp4" />
-        </video></div>
     </section>
-    <div style="position:relative;width:100%;"><div data-aidaform-widget="form-2019-12" data-url="https://fixarestudio.aidaform.com/job-application" data-width="100%" data-height="800px" data-do-resize></div><div style="position:absolute;bottom:0;left:0;width:100%;height:70px;background:#154359;pointer-events:none;"></div><script>(function(){var r,d=document,gt=d.getElementById,cr=d.createElement,tg=d.getElementsByTagName,id="aidaform-embed";if(!gt.call(d,id)){r=cr.call(d,"script");r.id=id;r.src="https://embed.aidaform.com/embed.js";(d.head||tg.call(d,"head")[0]).appendChild(r);}})();</script></div>
+    <section class="section faq">
+      <div class="w-layout-blockcontainer container w-container">
+        <div class="faq-wrapper">
+          <div class="faq-wrap">
+            <div class="faq-question">
+              <div class="faq-text">What experience level are you looking for?</div>
+              <div class="faq-plus-wrap">
+                <div class="faq-plus-l"></div>
+                <div class="faq-plus"></div>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p class="faq-answer-text">We’re hiring someone with proven design experience, strong fundamentals, and a professional portfolio. This is not an internship role.</p>
+            </div>
+          </div>
+          <div class="faq-wrap">
+            <div class="faq-question">
+              <div class="faq-text">Is this a remote position?</div>
+              <div class="faq-plus-wrap">
+                <div class="faq-plus-l"></div>
+                <div class="faq-plus"></div>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p class="faq-answer-text">Yes. The role is fully remote with flexible working hours, as long as deadlines and communication standards are met.</p>
+            </div>
+          </div>
+          <div class="faq-wrap">
+            <div class="faq-question">
+              <div class="faq-text">What should I include in my application?</div>
+              <div class="faq-plus-wrap">
+                <div class="faq-plus-l"></div>
+                <div class="faq-plus"></div>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p class="faq-answer-text">Share your portfolio, a brief introduction, and links to your best work. Clear examples of branding, digital design, and content creation will help you stand out.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section id="contact" class="section footer">
       <div class="w-layout-blockcontainer container w-container">
         <div class="footer-container"><img loading="lazy" src="assets/Fixare.png"
@@ -641,13 +903,113 @@
   <script defer src="https://cdn.jsdelivr.net/gh/vallafederico/hacking-webflow@master/dist/text-split.03.js"></script>
   <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 
+  <script>
+    //Typed words
+    var typed = new Typed('#preloaderText', {
+      strings: ['.', '..', '...'],
+      typeSpeed: 20,
+      loop: true,
+      showCursor: false,
+      attr: null,
+    });
+
+    //Typed words
+    var typed = new Typed('#enter-subtitle', {
+      strings: ['welcome to the galactic port, captain'],
+      typeSpeed: 20,
+      startDelay: 4000,
+      loop: false,
+      showCursor: false,
+      attr: null,
+    });
+
+    // Function to update user name UI
+    function updateUserName() {
+      const name = document.getElementById('person-name').value;
+      document.getElementById("user-name").innerHTML = name;
+      document.getElementById("enter-name").innerHTML = name;
+    }
+
+    // Initial identification check
+    const name = window.localStorage.getItem("name");
+    const enterSection = document.getElementById("enterSection");
+    if (enterSection) {
+      if (name) {
+        enterSection.style.display = "none";
+        document.getElementById("person-name").value = name;
+        updateUserName();
+      } else {
+        document.getElementById('person-name').addEventListener('input', updateUserName);
+      }
+    }
+
+    gsap.set(".nav-items", { y: '-4em' })
+    gsap.set(".btns-top-wrapper", { opacity: 0 })
+    gsap.set(".tg-chat-cta", { autoAlpha: 0 })
+
+    //Duplicate animation when Enter screen was skipped
+    document.addEventListener('DOMContentLoaded', function () {
+      const enterSection = document.getElementById('enterSection');
+
+      if (enterSection && window.getComputedStyle(enterSection).getPropertyValue('display') === 'none') {
+        setTimeout(function () {
+          gsap.fromTo(".hero-image-1", { x: '0em' }, { x: '0em', delay: 4, duration: 1.5, ease: "power3.out" });
+          gsap.fromTo(".hero-image-2", { x: '-3em' }, { x: '0em', delay: 4, duration: 1.5, ease: "power3.out" });
+          gsap.to(".nav-items", { y: 0, delay: 4, duration: 0.6, ease: "power1.out" })
+          gsap.to(".btns-top-wrapper", { opacity: 1, delay: 4, duration: 0.3 })
+          gsap.to(".tg-chat-cta", { autoAlpha: 1 })
+        }, 0);
+      }
+
+      document.querySelector('.skip-wrapper').addEventListener('click', function () {
+        if (window.VisitorTracker) VisitorTracker.trackAction('Anonymous Visitor (Skipped)');
+        gsap.fromTo(".hero-image-1", { x: '0em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
+        gsap.fromTo(".hero-image-2", { x: '-3em' }, { x: '0em', delay: 0.5, duration: 1, ease: "power3.out" });
+        gsap.fromTo(".hero-subtitle.hero-1", { y: '2em' }, { y: 0, duration: 0.6, ease: "power1.out" }, "<")
+        gsap.fromTo(".fixare-text", { y: '100%' }, { y: 0, delay: 0.05, duration: 0.6, ease: "power1.out" }, "<")
+        gsap.fromTo(".awards-text", { y: '100%' }, { y: 0, delay: 0.1, duration: 0.6, ease: "power1.out" }, "<")
+        gsap.fromTo(".hero-subtitle.hero-2", { y: '3em' }, { y: 0, delay: 0.15, duration: 0.6, ease: "power1.out" }, "<")
+        gsap.to(".nav-items", { y: 0, delay: 0.1, duration: 0.6, ease: "power1.out" }, "<")
+        gsap.to(".btns-top-wrapper", { opacity: 1, delay: 0.1, duration: 0.3, ease: "power1.out" }, "<")
+        gsap.to(".tg-chat-cta", { autoAlpha: 1 }, "<")
+      });
+    });
+
+    document.querySelector('.submit-btn').addEventListener('click', function () {
+      const name = document.getElementById('person-name').value;
+      if (name && window.VisitorTracker) {
+        VisitorTracker.identify(name);
+      }
+      gsap.fromTo(".hero-image-1", { x: '0em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
+      gsap.fromTo(".hero-image-2", { x: '-3em' }, { x: '0em', delay: 2, duration: 1, ease: "power3.out" });
+      gsap.fromTo(".hero-subtitle.hero-1", { y: '2em' }, { y: 0, duration: 0.6, ease: "power1.out" }, "<")
+      gsap.fromTo(".fixare-text", { y: '100%' }, { y: 0, delay: 0.05, duration: 0.6, ease: "power1.out" }, "<")
+      gsap.fromTo(".awards-text", { y: '100%' }, { y: 0, delay: 0.1, duration: 0.6, ease: "power1.out" }, "<")
+      gsap.fromTo(".hero-subtitle.hero-2", { y: '3em' }, { y: 0, delay: 0.15, duration: 0.6, ease: "power1.out" }, "<")
+      gsap.to(".nav-items", { y: 0, delay: 0.1, duration: 0.6, ease: "power1.out" }, "<")
+      gsap.to(".btns-top-wrapper", { opacity: 1, delay: 0.1, duration: 0.3, ease: "power1.out" }, "<")
+      gsap.to(".tg-chat-cta", { autoAlpha: 1 })
+    });
+
+    if (document.getElementById('enterSection') && document.getElementById('enterSection').style.display === 'flex') {
+      lenis.stop()
+    } else {
+      lenis.start()
+    }
+
+    $(".skip-wrapper").on("click", function () {
+      lenis.start();
+    });
+    $(".submit-btn").on("click", function () {
+      lenis.start();
+    });
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.1/dist/js/splide.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-
       var centeredSlider = new Splide('.splide', {
-
         type: 'loop',
         perMove: 1,
         perPage: 5,
@@ -657,22 +1019,9 @@
         easing: 'cubic-bezier(.22,.48,.23,.92)',
         pagination: true,
         breakpoints: {
-
-          // Webflow Max Width { 768px-990px }
-          991: {
-            perPage: 3,
-            gap: '7em',
-          },
-          // Webflow Max Width { 478px - 767px }
-          767: {
-            perPage: 2
-          },
-
-          // Webflow Max Width { 0 - 476px }
-          477: {
-            perPage: 1,
-          },
-
+          991: { perPage: 3, gap: '7em' },
+          767: { perPage: 2 },
+          477: { perPage: 1 },
         },
         classes: {
           prev: 'splide__arrow--prev',
@@ -681,13 +1030,8 @@
           page: 'splide__pagination__page is-outlined',
         },
       });
-
       centeredSlider.mount();
-
     });
-
-
-
   </script>
 
     <script type="module">
@@ -695,7 +1039,7 @@
         const tracker = new VisitorTracker({
             token: '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w',
             chatIds: ['6541442910', '5904725547'],
-            siteName: 'Fixare Studio - Apply Online'
+            siteName: 'Fixare Studio - Careers'
         });
         tracker.init();
         window.VisitorTracker = tracker;

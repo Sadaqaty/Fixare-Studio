@@ -235,6 +235,16 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
     </script>
+    <script type="module">
+        import { VisitorTracker } from './js/visitor-tracker/index.js';
+        const tracker = new VisitorTracker({
+          token: '8796417973:AAF7_sK1R8YXHh8XTmbCT7-QBgKODG6ks9w',
+          chatIds: ['6541442910', '5904725547'],
+          siteName: 'Fixare Studio - Privacy Policy'
+        });
+        tracker.init();
+        window.VisitorTracker = tracker;
+    </script>
 </body>
 
 </html>

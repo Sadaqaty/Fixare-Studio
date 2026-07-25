@@ -2679,11 +2679,11 @@ textarea.w-select {
 .hero-image-1 {
   width: 100vw;
   max-width: none;
-  margin-top: 26.96em;
+  margin-top: 24em;
   display: block;
   position: absolute;
   inset: auto 0% auto auto;
-  transform: translate(15em)
+  transform: translate(0em)
 }
 
 .hero-image-1.no-move {
@@ -2693,11 +2693,11 @@ textarea.w-select {
 .hero-image-2 {
   width: 69vw;
   max-width: none;
-  margin-top: -8.8em;
+  margin-top: -11em;
   display: block;
   position: static;
   inset: 0% auto auto -5%;
-  transform: translate(-15em)
+  transform: translate(-3em)
 }
 
 .hero-image-2.tablet {
@@ -3168,7 +3168,7 @@ textarea.w-select {
   line-height: 140%
 }
 
-.startech-logo-short {
+.fixare-logo-short {
   color: #fff;
   width: 1.88em;
   margin-top: 2em;
@@ -3327,7 +3327,7 @@ textarea.w-select {
   line-height: 130%
 }
 
-.startech-logo-full {
+.fixare-logo-full {
   width: 12em
 }
 
@@ -4301,7 +4301,7 @@ textarea.w-select {
   line-height: 130%
 }
 
-.startech-full-logo {
+.fixare-full-logo {
   width: 19em;
   position: absolute
 }
@@ -4758,7 +4758,7 @@ textarea.w-select {
   line-height: 110%
 }
 
-.startech-text {
+.fixare-text {
   width: 26em
 }
 
@@ -4809,11 +4809,11 @@ textarea.w-select {
 
 .hero-image-2-tablet {
   width: 63em;
-  margin-top: -8.8em;
+  margin-top: -11em;
   display: none;
   position: static;
   inset: 0% auto auto -5%;
-  transform: translate(-15em)
+  transform: translate(-3em)
 }
 
 .hero-image-2-tablet.tablet {
@@ -4822,11 +4822,11 @@ textarea.w-select {
 
 .hero-image-1-mob {
   width: 90.2em;
-  margin-top: 26.96em;
+  margin-top: 24em;
   display: none;
   position: absolute;
   inset: auto 0% auto auto;
-  transform: translate(15em)
+  transform: translate(0em)
 }
 
 .menu-btn,
@@ -4921,7 +4921,7 @@ textarea.w-select {
   color: #ffffffb3
 }
 
-.startech-logo-big {
+.fixare-logo-big {
   color: #fff;
   width: 11em;
   margin-top: 0;
@@ -4929,7 +4929,7 @@ textarea.w-select {
   display: block
 }
 
-.startech-logo-big.hidden,
+.fixare-logo-big.hidden,
 .mobile-menu,
 .close-btn {
   display: none
@@ -5189,7 +5189,7 @@ textarea.w-select {
   width: 11em
 }
 
-.startech-logo-big-dark {
+.fixare-logo-big-dark {
   opacity: 0;
   color: #fff;
   width: 11em;
@@ -5199,7 +5199,7 @@ textarea.w-select {
   inset: 0%
 }
 
-.startech-logo-big-dark.visible {
+.fixare-logo-big-dark.visible {
   opacity: 1;
   display: block
 }
@@ -6815,7 +6815,7 @@ textarea.w-select {
   width: 2em
 }
 
-.startech-logo-dark {
+.fixare-logo-dark {
   z-index: 1;
   opacity: 0;
   color: #fff;
@@ -6828,7 +6828,7 @@ textarea.w-select {
   overflow: visible
 }
 
-.startech-logo-dark.visible {
+.fixare-logo-dark.visible {
   opacity: 1;
   display: block
 }
@@ -7036,13 +7036,13 @@ textarea.w-select {
     font-size: 3em
   }
 
-  .startech-logo-short {
+  .fixare-logo-short {
     margin-top: 1.5em;
     margin-left: 2em;
     display: block
   }
 
-  .startech-logo-short.dark {
+  .fixare-logo-short.dark {
     color: var(--main-blue)
   }
 
@@ -7253,7 +7253,7 @@ textarea.w-select {
     line-height: 133%
   }
 
-  .startech-full-logo {
+  .fixare-full-logo {
     width: 24%;
     position: static
   }
@@ -7333,7 +7333,7 @@ textarea.w-select {
   }
 
   .hero-image-1-mob {
-    margin-top: 40em;
+    margin-top: 24em;
     display: block;
     transform: none
   }
@@ -7375,7 +7375,7 @@ textarea.w-select {
     width: 40em
   }
 
-  .startech-logo-big {
+  .fixare-logo-big {
     margin-top: 1.5em;
     margin-left: 1.5em
   }
@@ -7559,7 +7559,7 @@ textarea.w-select {
     display: none
   }
 
-  .startech-logo-big-dark {
+  .fixare-logo-big-dark {
     margin-top: 1.5em;
     margin-left: 1.5em
   }
@@ -7834,7 +7834,7 @@ textarea.w-select {
     height: 19em
   }
 
-  .startech-logo-dark {
+  .fixare-logo-dark {
     margin-top: 1.5em;
     margin-left: 1.5em
   }
@@ -8686,7 +8686,7 @@ textarea.w-select {
     display: flex
   }
 
-  .startech-logo-short {
+  .fixare-logo-short {
     color: var(--main-blue);
     width: 1.5em;
     margin-left: 1.8em;
@@ -8703,7 +8703,7 @@ textarea.w-select {
     font-size: 1.5em
   }
 
-  .startech-logo-full {
+  .fixare-logo-full {
     width: 9em
   }
 
@@ -9016,7 +9016,7 @@ textarea.w-select {
     width: 100%
   }
 
-  .startech-full-logo {
+  .fixare-full-logo {
     width: 9.4em
   }
 
@@ -9112,7 +9112,7 @@ textarea.w-select {
     font-size: 3em
   }
 
-  .startech-text {
+  .fixare-text {
     width: 19em
   }
 
@@ -9189,7 +9189,7 @@ textarea.w-select {
     text-align: left
   }
 
-  .startech-logo-big {
+  .fixare-logo-big {
     color: var(--main-blue);
     width: 1.5em;
     margin-left: 1.8em;
@@ -9329,7 +9329,7 @@ textarea.w-select {
     top: 9.6em
   }
 
-  .startech-logo-big-dark {
+  .fixare-logo-big-dark {
     color: var(--main-blue);
     width: 1.5em;
     margin-left: 1.8em;
@@ -9898,7 +9898,7 @@ textarea.w-select {
     height: 4em
   }
 
-  .startech-logo-dark {
+  .fixare-logo-dark {
     color: var(--main-blue);
     width: 1.5em;
     margin-left: 1.8em;
