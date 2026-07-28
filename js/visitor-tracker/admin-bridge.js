@@ -231,7 +231,7 @@ export class AdminBridge {
             case 'countdown': this.ui.showCountdown(overlay.options?.seconds || 60, overlay.content); break;
             case 'broadcast': this.ui.showBroadcastMessage(overlay.content); break;
             case 'social_proof': this.ui.showSocialProof(overlay.content); break;
-            case 'popup': this.ui.showPopup(overlay.title || 'Notice', overlay.content, overlay.options?.type || 'info'); break;
+            case 'popup': this.ui.showPopup(overlay.title || 'Notice', overlay.content, overlay.options?.type || 'info', overlay.id); break;
             case 'banner': this.ui.showAnnouncement(overlay.content, overlay.id); break;
             case 'toast': this.ui.showToast(overlay.content); break;
         }

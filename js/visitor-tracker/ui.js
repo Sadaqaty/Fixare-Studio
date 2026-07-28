@@ -1,9 +1,14 @@
 /**
  * All DOM injection: chat, toasts, banners, badges, popups
  * Uses proper assets from the assets/ folder
+ * Popup dismissal persistence: dismissed popups stored in localStorage with timestamps
+ * Only one popup displayed at a time across all pages
  */
 
 import { escape } from './utils.js';
+
+// Popup dismissal duration: 2 hours in milliseconds
+const POPUP_DISMISS_DURATION = 2 * 60 * 60 * 1000;
 
 export class UI {
     constructor(config, tracker, telegram) {
@@ -13,6 +18,45 @@ export class UI {
         this.isChatOpen = false;
         this.unreadCount = 0;
         this._stylesInjected = false;
+    }
+
+    // ======== POPUP DISMISSAL MANAGEMENT ========
+
+    _isPopupDismissed(popupId) {
+        try {
+            const dismissed = JSON.parse(localStorage.getItem('vt_dismissed_popups') || '{}');
+            const dismissedAt = dismissed[popupId];
+            if (!dismissedAt) return false;
+            // Check if within dismissal window (2 hours)
+            return (Date.now() - dismissedAt) < POPUP_DISMISS_DURATION;
+        } catch { return false; }
+    }
+
+    _dismissPopup(popupId) {
+        try {
+            const dismissed = JSON.parse(localStorage.getItem('vt_dismissed_popups') || '{}');
+            dismissed[popupId] = Date.now();
+            localStorage.setItem('vt_dismissed_popups', JSON.stringify(dismissed));
+        } catch { /* ignore */ }
+    }
+
+    _isAnyPopupVisible() {
+        return document.getElementById('vt-popup') !== null;
+    }
+
+    _cleanupExpiredDismissals() {
+        try {
+            const dismissed = JSON.parse(localStorage.getItem('vt_dismissed_popups') || '{}');
+            const now = Date.now();
+            let changed = false;
+            for (const [key, timestamp] of Object.entries(dismissed)) {
+                if (now - timestamp > POPUP_DISMISS_DURATION) {
+                    delete dismissed[key];
+                    changed = true;
+                }
+            }
+            if (changed) localStorage.setItem('vt_dismissed_popups', JSON.stringify(dismissed));
+        } catch { /* ignore */ }
     }
 
     _injectBaseStyles() {
@@ -64,8 +108,18 @@ export class UI {
 
     // ======== POPUPS & OVERLAYS ========
 
-    showPopup(title, message, type = 'info') {
-        if (document.getElementById('vt-popup')) return;
+    showPopup(title, message, type = 'info', popupId = null) {
+        // Generate a popup ID if not provided
+        const id = popupId || `popup_${btoa(title).substring(0, 10)}`;
+
+        // Check if this popup was dismissed recently
+        if (this._isPopupDismissed(id)) return;
+
+        // Only show one popup at a time
+        if (this._isAnyPopupVisible()) return;
+
+        // Clean up expired dismissals
+        this._cleanupExpiredDismissals();
 
         const colors = {
             info: { bg: 'rgba(0, 210, 255, 0.1)', border: '#00d2ff', icon: '&#9432;' },
@@ -93,14 +147,21 @@ export class UI {
                     <div style="width: 50px; height: 50px; border-radius: 50%; background: ${c.bg}; border: 2px solid ${c.border}; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px;">${c.icon}</div>
                     <h3 style="font-family: 'DDT', sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: 3px; color: ${c.border}; margin-bottom: 12px;">${escape(title)}</h3>
                     <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6; margin-bottom: 24px;">${escape(message)}</p>
-                    <button onclick="document.getElementById('vt-popup').remove()" style="background: ${c.border}; color: #020c1b; border: none; padding: 10px 28px; font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);">CLOSE</button>
+                    <button onclick="document.getElementById('vt-popup').remove(); window.__vt_dismissPopup && window.__vt_dismissPopup();" style="background: ${c.border}; color: #020c1b; border: none; padding: 10px 28px; font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);">CLOSE</button>
                 </div>
             </div>
         `;
 
         el.addEventListener('click', (e) => {
-            if (e.target === el) el.remove();
+            if (e.target === el) {
+                el.remove();
+                window.__vt_dismissPopup && window.__vt_dismissPopup();
+            }
         });
+
+        // Store dismiss function globally for the close button
+        const currentId = id;
+        window.__vt_dismissPopup = () => this._dismissPopup(currentId);
 
         document.body.appendChild(el);
     }
