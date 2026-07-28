@@ -1,58 +1,39 @@
 {
-  "name": "FixAre",
-  "short_name": "FixAre",
-  "description": "Innovative Digital Solutions & Creative Services",
+  "name": "Fixare Studio",
+  "short_name": "Fixare",
+  "description": "Fixare Studio - Remote Creative-Tech Studio operating at the intersection of design, code, and digital strategy.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#05060c",
+  "theme_color": "#05060c",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
+      "src": "/assets/Fixare-Square.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "apple touch icon"
+      "src": "/assets/fixare.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshot1.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "/screenshot2.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
-  ],
-  "categories": ["business", "productivity", "utilities"],
+  "categories": ["business", "productivity", "technology"],
   "shortcuts": [
     {
       "name": "Our Services",
       "short_name": "Services",
-      "description": "View our service offerings",
-      "url": "#services"
+      "description": "View Fixare Studio engineering & design capabilities",
+      "url": "/about.html#nominations-2026"
     },
     {
       "name": "Contact Us",
       "short_name": "Contact",
-      "description": "Get in touch with our team",
-      "url": "#contact"
+      "description": "Get in touch with Fixare Studio team",
+      "url": "/contact.html"
     }
   ]
 }
