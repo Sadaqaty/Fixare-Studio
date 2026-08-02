@@ -50,6 +50,15 @@ export class AdminBridge {
         // Start heartbeat to keep visitor online
         this._startHeartbeat();
 
+        // Listen for tab close or window unload to set visitor offline promptly
+        window.addEventListener('pagehide', () => {
+            this.markVisitorOffline();
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            this._updateHeartbeat();
+        });
+
         // Listen for name changes
         window.addEventListener('storage', (e) => {
             if (e.key === 'name' && e.newValue) {
