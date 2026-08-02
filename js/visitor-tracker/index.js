@@ -1,12 +1,3 @@
-/**
- * VisitorTracker - Modular Website Visitor Intelligence & Admin Panel Integration
- *
- * Usage:
- *   import { VisitorTracker } from './js/visitor-tracker/index.js';
- *   const tracker = new VisitorTracker({ supabaseUrl: '...', supabaseKey: '...' });
- *   tracker.init();
- */
-
 import { DEFAULT_CONFIG, mergeConfig } from './config.js';
 import { Tracker } from './tracker.js';
 import { AdminBridge } from './admin-bridge.js';
@@ -42,6 +33,7 @@ export class VisitorTracker {
 
         this.tracker.loadVisitorData();
         this.tracker.startSync();
+        this.tracker.startRealtimeEngagementTracking();
         this.tracker.getReferrerInfo = getReferrerInfo;
 
         await this.tracker.fetchGeolocation();

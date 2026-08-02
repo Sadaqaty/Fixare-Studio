@@ -1,21 +1,3 @@
-/**
- * Fixare Chat Widget - Reusable standalone chat component
- * Drop into any site to add real-time chat via Supabase.
- *
- * Usage:
- *   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- *   <script src="chat-widget.js"></script>
- *   <script>
- *     FixareChat.init({
- *       supabaseUrl: 'YOUR_URL',
- *       supabaseKey: 'YOUR_KEY',
- *       position: 'bottom-right',
- *       theme: 'dark',
- *       primaryColor: '#00d2ff',
- *       greeting: 'Hi! How can we help you?'
- *     });
- *   </script>
- */
 const FixareChat = {
   _config: {
     supabaseUrl: '',

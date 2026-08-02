@@ -1,7 +1,3 @@
-/**
- * Admin Bridge - Enhanced visitor tracking with proper name sync and online status
- */
-
 import { fetchWithRetry, escape } from './utils.js';
 
 export class AdminBridge {
@@ -65,10 +61,10 @@ export class AdminBridge {
     }
 
     _startHeartbeat() {
-        // Update last_visit_at every 30 seconds to keep visitor "online"
+        // Update last_visit_at & engagement metrics every 15 seconds for realtime tracking
         this._heartbeatTimer = setInterval(() => {
             this._updateHeartbeat();
-        }, 30000);
+        }, 15000);
     }
 
     async _updateHeartbeat() {
@@ -77,8 +73,14 @@ export class AdminBridge {
         try {
             await client.from('visitors').update({
                 last_visit_at: new Date().toISOString(),
-                is_online: true,
-                last_page: document.title
+                is_online: !document.hidden && !this.tracker.isIdle,
+                last_page: document.title,
+                metadata: {
+                    active_time_s: this.tracker.activeTimeSeconds,
+                    max_scroll_pct: this.tracker.maxScrollDepth,
+                    is_idle: this.tracker.isIdle,
+                    url: window.location.href
+                }
             }).eq('id', this._visitorId);
         } catch {}
     }
@@ -107,7 +109,8 @@ export class AdminBridge {
                             last_visit_at: new Date().toISOString(),
                             visit_count: visitorData.visit_count || 1,
                             last_page: visitorData.last_page,
-                            is_online: true
+                            is_online: true,
+                            metadata: visitorData.metadata
                         }).eq('id', this._visitorId);
                     } catch {}
                 }
@@ -128,9 +131,9 @@ export class AdminBridge {
             name: this._getVisitorName(),
             ip: this.tracker.visitor.ip || 'Unknown',
             country: this.tracker.visitor.country || 'Unknown',
-            city: this._getCity(),
-            latitude: this._getCoords().lat,
-            longitude: this._getCoords().lng,
+            city: this.tracker.visitor.city || this._getCity(),
+            latitude: this.tracker.visitor.latitude || this._getCoords().lat,
+            longitude: this.tracker.visitor.longitude || this._getCoords().lng,
             user_agent: navigator.userAgent,
             screen_width: window.screen.width,
             screen_height: window.screen.height,
@@ -139,7 +142,14 @@ export class AdminBridge {
             is_online: true,
             visit_count: visitCount,
             first_visit_at: localStorage.getItem('vt_first_visit') || new Date().toISOString(),
-            last_visit_at: new Date().toISOString()
+            last_visit_at: new Date().toISOString(),
+            metadata: {
+                fingerprint: this.tracker.visitor.fingerprint,
+                capabilities: this.tracker.visitor.capabilities,
+                performance: this.tracker.visitor.performance,
+                referrer: document.referrer || 'Direct',
+                url: window.location.href
+            }
         };
     }
 

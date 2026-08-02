@@ -324,6 +324,63 @@
     .btn-outline-top {
       cursor: pointer !important;
     }
+
+    /* Responsive Contact Page Styles */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2.5em;
+      align-items: start;
+    }
+
+    .contact-form-container {
+      background: rgba(11, 99, 118, 0.15);
+      border: 1px solid rgba(75, 189, 240, 0.25);
+      border-radius: 16px;
+      padding: 2.5em;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .contact-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25em;
+    }
+
+    .contact-hero-h1 {
+      font-size: clamp(2em, 5vw, 3.2em);
+      line-height: 1.15;
+      margin-bottom: 0.4em;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    @media screen and (max-width: 991px) {
+      .contact-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2em !important;
+      }
+      .contact-form-container {
+        padding: 1.8em !important;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .contact-form-row {
+        grid-template-columns: 1fr !important;
+        gap: 1.25em !important;
+      }
+      .contact-form-container {
+        padding: 1.2em !important;
+        border-radius: 12px !important;
+      }
+      .contact-form-container input,
+      .contact-form-container select,
+      .contact-form-container textarea {
+        font-size: 16px !important;
+      }
+    }
   </style>
 
 
@@ -567,7 +624,7 @@
       <div class="w-layout-blockcontainer container w-container">
         <div class="hero-wrapper" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
           <div class="hero-badge" style="margin-bottom: 1em;">[ Contact Fixare Studio ]</div>
-          <h1 class="h1" style="font-size: 3.2em; line-height: 1.1; margin-bottom: 0.4em; color: #ffffff; text-transform: uppercase;">
+          <h1 class="h1 contact-hero-h1">
             Let's Build Something <span style="color: #4bbdf0;">Extraordinary</span>
           </h1>
           <p class="text-16-light center" style="max-width: 650px; opacity: 0.85; margin: 0 auto; color: #d6ecf7;">
@@ -580,10 +637,10 @@
     <!-- Custom Supabase Interactive Contact Form & Contact Details Grid -->
     <section class="section" style="padding-top: 1em; padding-bottom: 6em;">
       <div class="w-layout-blockcontainer container w-container">
-        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2.5em; align-items: start;">
+        <div class="contact-grid">
           
           <!-- Contact Form Container -->
-          <div style="background: rgba(11, 99, 118, 0.15); border: 1px solid rgba(75, 189, 240, 0.25); border-radius: 16px; padding: 2.5em; backdrop-filter: blur(12px); box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+          <div class="contact-form-container">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5em; flex-wrap: wrap; gap: 0.5em;">
               <h2 style="font-family: DDT, sans-serif; font-size: 1.8em; color: #fff; text-transform: uppercase; margin: 0;">Start a Conversation</h2>
               <span style="font-size: 0.75em; color: #4bbdf0; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(75, 189, 240, 0.4); padding: 4px 10px; border-radius: 20px;">Supabase Connected</span>
@@ -598,7 +655,7 @@
               </div>
 
               <!-- Grid for Email & Phone -->
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25em;">
+              <div class="contact-form-row">
                 <div style="display: flex; flex-direction: column; gap: 0.4em;">
                   <label for="contactEmail" style="color: rgba(255, 255, 255, 0.85); font-size: 0.9em; font-weight: 500;">Email Address <span style="color: #ff6b00;">*</span></label>
                   <input type="email" id="contactEmail" name="email" required placeholder="alex@company.com" style="background: rgba(5, 12, 22, 0.7); border: 1px solid rgba(75, 189, 240, 0.3); border-radius: 8px; color: #fff; padding: 0.85em 1em; font-size: 0.95em; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#4bbdf0'" onblur="this.style.borderColor='rgba(75, 189, 240, 0.3)'" />
@@ -610,7 +667,7 @@
               </div>
 
               <!-- Grid for Service & Budget -->
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25em;">
+              <div class="contact-form-row">
                 <div style="display: flex; flex-direction: column; gap: 0.4em;">
                   <label for="contactService" style="color: rgba(255, 255, 255, 0.85); font-size: 0.9em; font-weight: 500;">Service Needed</label>
                   <select id="contactService" name="service_needed" style="background: rgba(5, 12, 22, 0.9); border: 1px solid rgba(75, 189, 240, 0.3); border-radius: 8px; color: #fff; padding: 0.85em 1em; font-size: 0.95em; outline: none; cursor: pointer;">
