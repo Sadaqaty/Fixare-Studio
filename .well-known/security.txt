@@ -1,0 +1,12 @@
+# security.txt for fixarestudio.com
+# RFC 9116: https://www.rfc-editor.org/rfc/rfc9116
+
+Contact: mailto:security@fixarestudio.com
+Contact: https://fixarestudio.com/security/contact
+Expires: 2027-10-13T00:00:00.000Z
+Canonical: https://fixarestudio.com/.well-known/security.txt
+Preferred-Languages: en
+Policy: https://fixarestudio.com/security/policy
+Hiring: https://fixarestudio.com/careers
+Acknowledgments: https://fixarestudio.com/security/thanks
+# Encryption: https://fixarestudio.com/.well-known/pgp-key.txt
