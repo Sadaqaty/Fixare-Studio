@@ -49,7 +49,7 @@
                     <div style="text-align:center; padding:80px 20px; max-width:600px; margin:0 auto;">
                         <div style="font-size:64px; margin-bottom:20px; opacity:0.15;">&#128269;</div>
                         <h3 style="font-family:'DDT',sans-serif; font-size:1.4rem; text-transform:uppercase; letter-spacing:4px; color:#154359; margin-bottom:12px;">No Open Positions</h3>
-                        <p style="color:#666; max-width:400px; margin:0 auto; line-height:1.8; font-size:15px;">We don't have any open positions at the moment. Check back later or send your resume to <a href="mailto:hr@fixare.studio" style="color:#0b6376; text-decoration:underline;">hr@fixare.studio</a></p>
+                        <p style="color:#666; max-width:400px; margin:0 auto; line-height:1.8; font-size:15px;">We don't have any open positions at the moment. Check back later or send your resume to <a href="mailto:hr@fixarestudio.com" style="color:#0b6376; text-decoration:underline;">hr@fixarestudio.com</a></p>
                     </div>
                 `;
                 return;
@@ -83,7 +83,7 @@
     }
 
     function renderJobCard(pos, idx) {
-        const applyUrl = pos.apply_url || 'mailto:hr@fixare.studio?subject=Application for ' + encodeURIComponent(pos.title);
+        const applyUrl = pos.apply_url || 'mailto:hr@fixarestudio.com?subject=Application for ' + encodeURIComponent(pos.title);
         const typeLabel = formatType(pos.type);
         const tags = [];
         if (pos.type) tags.push(typeLabel);

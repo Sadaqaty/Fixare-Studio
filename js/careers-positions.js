@@ -36,7 +36,7 @@
                     <div class="positions-empty">
                         <div class="positions-empty-icon">&#128269;</div>
                         <h3>No Open Positions</h3>
-                        <p>We don't have any open positions at the moment. Check back later or send your resume to hr@fixare.studio</p>
+                        <p>We don't have any open positions at the moment. Check back later or send your resume to hr@fixarestudio.com</p>
                     </div>
                 `;
                 return;
@@ -55,7 +55,7 @@
                     ${pos.description ? `<p class="position-desc">${escapeHtml(pos.description)}</p>` : ''}
                     ${pos.requirements ? `<div class="position-reqs"><strong>Requirements:</strong> ${escapeHtml(pos.requirements)}</div>` : ''}
                     <div class="position-footer">
-                        ${pos.apply_url ? `<a href="${escapeHtml(pos.apply_url)}" target="_blank" class="position-apply-btn">Apply Now</a>` : `<a href="mailto:hr@fixare.studio?subject=Application for ${encodeURIComponent(pos.title)}" class="position-apply-btn">Apply Now</a>`}
+                        ${pos.apply_url ? `<a href="${escapeHtml(pos.apply_url)}" target="_blank" class="position-apply-btn">Apply Now</a>` : `<a href="mailto:hr@fixarestudio.com?subject=Application for ${encodeURIComponent(pos.title)}" class="position-apply-btn">Apply Now</a>`}
                     </div>
                 </div>
             `).join('');
